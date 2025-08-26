@@ -1,17 +1,40 @@
+:root {
+  --bg: #fff;
+  --text: #000;
+  --header-bg: #f0f0f0;
+  --header-text: #000;
+  --rail-bg: #ddd;
+  --measure-border: #888;
+  --secondary-color: #555;
+}
+
 body {
   margin: 0;
   font-family: sans-serif;
+  background: var(--bg, #fff);
+  color: var(--text, #000);
+  font-size: var(--font-size, 16px);
+}
+
+body.dark {
+  --bg: #1e1e1e;
+  --text: #fff;
+  --header-bg: #222;
+  --header-text: #fff;
+  --rail-bg: #444;
+  --measure-border: #666;
+  --secondary-color: #bbb;
 }
 
 header {
-  background: #222;
-  color: #fff;
+  background: var(--header-bg, #222);
+  color: var(--header-text, #fff);
   padding: 0.5rem 1rem;
 }
 
 .rail {
   height: 20px;
-  background: #444;
+  background: var(--rail-bg, #444);
 }
 
 .grid {
@@ -32,7 +55,7 @@ header {
 }
 
 .measure {
-  border: 1px solid #888;
+  border: 1px solid var(--measure-border, #888);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   width: 8rem;
@@ -75,7 +98,7 @@ header {
 }
 
 .slot {
-  border-right: 1px solid #888;
+  border-right: 1px solid var(--measure-border, #888);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,7 +112,7 @@ header {
 .secondary {
   font-size: 0.7em;
   line-height: 1;
-  color: #555;
+  color: var(--secondary-color, #555);
 }
 
 .slot:last-child {

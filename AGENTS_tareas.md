@@ -106,7 +106,11 @@ Convenciones: [ ] pendiente · [x] hecho
         [x] Importación MusicXML simple con tests.
 
 14. Preferencias/Vista
-    [ ] Tema, fuentes/tamaños, ♯/♭.
+    [x] Tema, fuentes/tamaños, ♯/♭.
+    14B) Pruebas automáticas de preferencias
+        [x] Hecho.
+    14C) Detección automática de tema del sistema
+        [ ] Pendiente.
 
 15. PWA / Offline
     [ ] Service Worker + manifest; app shell offline; onLine indicator.
