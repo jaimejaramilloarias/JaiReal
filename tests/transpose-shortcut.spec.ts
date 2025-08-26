@@ -40,4 +40,10 @@ test('transpose with keyboard shortcuts', async ({ page }) => {
   await page.keyboard.press('Control+ArrowDown');
   await expect(chord).toHaveText('C');
   await expect(page.locator('text=Transposición: 0')).toBeVisible();
+  await page.keyboard.press('Control+Alt+ArrowUp');
+  await expect(chord).toHaveText('C');
+  await expect(page.locator('text=Transposición: +12')).toBeVisible();
+  await page.keyboard.press('Control+Alt+ArrowDown');
+  await expect(chord).toHaveText('C');
+  await expect(page.locator('text=Transposición: 0')).toBeVisible();
 });

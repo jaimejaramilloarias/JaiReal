@@ -79,6 +79,9 @@ Convenciones: [ ] pendiente · [x] hecho
 [x] Hecho.
 
 9H) Atajos de teclado para transposición por octava (±12)
+[x] Hecho.
+
+9I) Mostrar atajos de octava en la interfaz
 [ ] Pendiente.
 
 10. Plantillas
