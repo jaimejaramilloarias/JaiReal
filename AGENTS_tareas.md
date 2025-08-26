@@ -24,10 +24,14 @@ Convenciones: [ ] pendiente · [x] hecho
 
 5. Edición 4 acordes/compás
    [x] Slots 1–4 contenteditable.
-   [ ] Atajos; copiar/pegar.
+   [x] Atajos; copiar/pegar.
+   5B) Copiar/pegar compases completos y portapapeles del sistema
+   [ ] Pendiente.
 
 6. Renglón secundario
-   [ ] Por beat; estilo pequeño; persistencia/imprimir.
+   [x] Por beat; estilo pequeño; persistencia.
+   6B) Imprimir renglón secundario
+   [ ] Pendiente.
 
 7. Marcadores
    [ ] %, ||:, :||, Segno/Coda/Fine/D.C./D.S./To Coda con toolbar y reglas.
