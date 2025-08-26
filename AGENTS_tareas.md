@@ -82,7 +82,7 @@ Convenciones: [ ] pendiente · [x] hecho
 [x] Hecho.
 
 9I) Mostrar atajos de octava en la interfaz
-[ ] Pendiente.
+[x] Hecho.
 
 10. Plantillas
     [ ] AABA/Blues/Rhythm Changes/Intro-Tag-Out.
@@ -147,3 +147,6 @@ Criterios de aceptación (15B)
     [ ] MVP: 1–8,10,11(PDF),12(min),15(PWA),17 parcial,18.
     [ ] v1: 9,11(PNG/SVG),13,14,15B (sync+share lectura),16,17 completo.
     [ ] v2: colaboración tiempo real, LMS, lote PDF/ZIP, diffs y merge por compás.
+
+20. Audio
+    [ ] Reproducción de acordes con Web Audio API.
