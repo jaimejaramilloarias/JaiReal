@@ -29,7 +29,6 @@ header {
   margin-bottom: 0.5rem;
 }
 
-
 .measure {
   border: 1px solid #888;
   display: grid;
@@ -37,6 +36,10 @@ header {
   width: 8rem;
   height: 4rem;
   margin-right: 0.25rem;
+}
+
+.measure.drag-over {
+  border-color: #00f;
 }
 
 .slot {

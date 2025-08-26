@@ -30,13 +30,15 @@ Convenciones: [ ] pendiente · [x] hecho
    5C) Arrastrar para reordenar compases
    [x] Hecho.
    5D) Indicador visual al arrastrar compases
-   [ ] Pendiente.
+   [x] Hecho.
 
 6. Renglón secundario
    [x] Por beat; estilo pequeño; persistencia.
    6B) Imprimir renglón secundario
    [x] Hecho.
    6C) Toggle de visibilidad del renglón secundario
+   [x] Hecho.
+   6D) Atajo de teclado para alternar renglón secundario
    [ ] Pendiente.
 
 7. Marcadores

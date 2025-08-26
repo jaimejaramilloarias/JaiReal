@@ -25,4 +25,13 @@ describe('ChartStore', () => {
     const s2 = new ChartStore();
     expect(s2.chart.sections[0].measures[0].beats[0].secondary).toBe('b');
   });
+
+  it('toggles and persists secondary visibility', () => {
+    const s = new ChartStore();
+    expect(s.showSecondary).toBe(true);
+    s.toggleSecondary();
+    expect(s.showSecondary).toBe(false);
+    const s2 = new ChartStore();
+    expect(s2.showSecondary).toBe(false);
+  });
 });
