@@ -149,4 +149,6 @@ Criterios de aceptación (15B)
     [ ] v2: colaboración tiempo real, LMS, lote PDF/ZIP, diffs y merge por compás.
 
 20. Audio
-    [ ] Reproducción de acordes con Web Audio API.
+    [x] Reproducción de acordes con Web Audio API.
+    20B) Control de tempo y parada
+    [ ] Ajustar BPM y botón de detener reproducción.

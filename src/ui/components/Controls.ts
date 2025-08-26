@@ -1,10 +1,10 @@
 import { store } from '../../state/store';
 import type { Marker } from '../../core/model';
+import { playChart, stopPlayback } from '../../audio/player';
 
 export function Controls(): HTMLElement {
   const el = document.createElement('div');
   el.className = 'controls';
-
   const messageEl = document.createElement('div');
   messageEl.className = 'message';
   messageEl.setAttribute('role', 'alert');
@@ -104,6 +104,18 @@ export function Controls(): HTMLElement {
   resetTransposeBtn.textContent = 'Reset Transposición';
   resetTransposeBtn.onclick = () => {
     store.resetTranspose();
+  };
+
+  const playBtn = document.createElement('button');
+  playBtn.textContent = 'Reproducir';
+  playBtn.onclick = () => {
+    playChart(store.chart);
+  };
+
+  const stopBtn = document.createElement('button');
+  stopBtn.textContent = 'Detener';
+  stopBtn.onclick = () => {
+    stopPlayback();
   };
 
   const instrumentLabel = document.createElement('label');
@@ -218,6 +230,8 @@ export function Controls(): HTMLElement {
     transposeDownBtn,
     transposeInfo,
     resetTransposeBtn,
+    playBtn,
+    stopBtn,
     instrumentLabel,
     instrumentSelect,
     accidentalLabel,

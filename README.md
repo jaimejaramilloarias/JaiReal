@@ -1,6 +1,7 @@
 # JaiReal-PRO
 
 Editor de cifrados orientado a trabajo offline.
+Incluye reproducción básica de acordes con la Web Audio API.
 
 ## Requisitos
 
