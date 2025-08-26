@@ -67,6 +67,23 @@ function scheduleChord(freqs: number[], start: number, duration: number) {
   });
 }
 
+function scheduleClick(start: number, accent: boolean) {
+  const ctx = getCtx();
+  const osc = ctx.createOscillator();
+  osc.type = 'square';
+  osc.frequency.value = accent ? 1000 : 800;
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  const t = ctx.currentTime + start;
+  const end = t + 0.05;
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(accent ? 0.7 : 0.5, t + 0.001);
+  gain.gain.exponentialRampToValueAtTime(0.0001, end);
+  osc.start(t);
+  osc.stop(end);
+}
+
 export function playChart(chart: Chart, tempo = 120) {
   const ctx = getCtx();
   if (ctx.state === 'suspended') void ctx.resume();
@@ -74,7 +91,8 @@ export function playChart(chart: Chart, tempo = 120) {
   let time = 0;
   chart.sections.forEach((section) => {
     section.measures.forEach((m) => {
-      m.beats.forEach((b) => {
+      m.beats.forEach((b, i) => {
+        scheduleClick(time, i === 0);
         if (b.chord) {
           const freqs = parseChord(b.chord);
           if (freqs.length) scheduleChord(freqs, time, beatDur);

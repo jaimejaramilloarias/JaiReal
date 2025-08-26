@@ -153,4 +153,6 @@ Criterios de aceptación (15B)
     20B) Control de tempo y parada
     [x] Ajustar BPM y botón de detener reproducción.
     20C) Metrónomo durante reproducción
-    [ ] Implementar clic de metrónomo sincronizado con el tempo.
+    [x] Implementar clic de metrónomo sincronizado con el tempo.
+    20D) Toggle de metrónomo
+    [ ] Permitir activar o desactivar el sonido del metrónomo durante la reproducción.
