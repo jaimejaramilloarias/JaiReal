@@ -76,16 +76,18 @@ export function Controls(): HTMLElement {
 
   const transposeUpBtn = document.createElement('button');
   const transposeUpShortcut = 'Ctrl+↑';
+  const transposeOctUpShortcut = 'Ctrl+Alt+↑';
   transposeUpBtn.textContent = `Transponer +1 (${transposeUpShortcut})`;
-  transposeUpBtn.title = transposeUpShortcut;
+  transposeUpBtn.title = `${transposeUpShortcut} (+1), ${transposeOctUpShortcut} (+12)`;
   transposeUpBtn.onclick = () => {
     store.transpose(1);
   };
 
   const transposeDownBtn = document.createElement('button');
   const transposeDownShortcut = 'Ctrl+↓';
+  const transposeOctDownShortcut = 'Ctrl+Alt+↓';
   transposeDownBtn.textContent = `Transponer -1 (${transposeDownShortcut})`;
-  transposeDownBtn.title = transposeDownShortcut;
+  transposeDownBtn.title = `${transposeDownShortcut} (-1), ${transposeOctDownShortcut} (-12)`;
   transposeDownBtn.onclick = () => {
     store.transpose(-1);
   };

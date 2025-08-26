@@ -9,6 +9,16 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 app.append(Header(), Rail(), Grid(), Controls());
 
 window.addEventListener('keydown', (ev) => {
+  if (ev.ctrlKey && ev.altKey && ev.key === 'ArrowUp') {
+    store.transpose(12);
+    ev.preventDefault();
+    return;
+  }
+  if (ev.ctrlKey && ev.altKey && ev.key === 'ArrowDown') {
+    store.transpose(-12);
+    ev.preventDefault();
+    return;
+  }
   if (ev.ctrlKey && ev.shiftKey && ev.key.toLowerCase() === 'l') {
     store.toggleSecondary();
     ev.preventDefault();
