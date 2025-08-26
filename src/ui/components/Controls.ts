@@ -37,8 +37,8 @@ export function Controls(): HTMLElement {
   updateToggleText();
   toggleSecondaryBtn.onclick = () => {
     store.toggleSecondary();
-    updateToggleText();
   };
+  store.subscribe(updateToggleText);
 
   el.append(saveBtn, loadInput, toggleSecondaryBtn);
   return el;

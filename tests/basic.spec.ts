@@ -13,3 +13,13 @@ test('measure has four editable slots', async ({ page }) => {
     'true',
   );
 });
+
+test('toggle secondary line with keyboard shortcut', async ({ page }) => {
+  await page.goto('/');
+  const secondary = page.locator('.secondary').first();
+  await expect(secondary).toBeVisible();
+  await page.keyboard.press('Control+Shift+L');
+  await expect(secondary).toBeHidden();
+  await page.keyboard.press('Control+Shift+L');
+  await expect(secondary).toBeVisible();
+});

@@ -32,3 +32,7 @@ npm run test:e2e
 ```bash
 npm run lint
 ```
+
+## Atajos de teclado
+
+- `Ctrl+Shift+L`: alterna la visibilidad del renglón secundario.

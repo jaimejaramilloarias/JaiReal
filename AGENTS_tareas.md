@@ -39,6 +39,8 @@ Convenciones: [ ] pendiente · [x] hecho
    6C) Toggle de visibilidad del renglón secundario
    [x] Hecho.
    6D) Atajo de teclado para alternar renglón secundario
+   [x] Hecho.
+   6E) Mostrar en la interfaz el atajo de teclado
    [ ] Pendiente.
 
 7. Marcadores
