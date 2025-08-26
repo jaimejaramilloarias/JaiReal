@@ -8,6 +8,11 @@ import {
 } from '../../audio/player';
 import { exportChartPDF } from '../../export/pdf';
 import { getTemplate, type TemplateName } from '../../core/templates';
+import {
+  saveChart as saveLibraryChart,
+  listCharts as listLibraryCharts,
+  getChart as getLibraryChart,
+} from '../../state/library';
 
 type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth';
 
@@ -74,6 +79,42 @@ export function Controls(): HTMLElement {
   pdfBtn.textContent = 'Exportar PDF';
   pdfBtn.onclick = () => {
     exportChartPDF(store.chart);
+  };
+
+  const saveLibBtn = document.createElement('button');
+  saveLibBtn.textContent = 'Guardar en biblioteca';
+  saveLibBtn.onclick = async () => {
+    const title = prompt('Título', store.chart.title);
+    if (!title) return;
+    const tagStr = prompt('Etiquetas (separadas por coma)', '');
+    const tags = tagStr
+      ? tagStr
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean)
+      : [];
+    await saveLibraryChart(store.chart, title, tags);
+  };
+
+  const openLibBtn = document.createElement('button');
+  openLibBtn.textContent = 'Abrir de biblioteca';
+  openLibBtn.onclick = async () => {
+    const query = prompt('Buscar');
+    const charts = await listLibraryCharts(query ?? undefined);
+    if (charts.length === 0) {
+      alert('No encontrado');
+      return;
+    }
+    const choices = charts.map((c, i) => `${i + 1}: ${c.title}`).join('\n');
+    const sel = prompt(`Elige chart:\n${choices}`);
+    const idx = sel ? Number(sel) - 1 : -1;
+    const item = charts[idx];
+    if (item) {
+      const chart = await getLibraryChart(item.id);
+      if (chart) {
+        store.setChart(chart);
+      }
+    }
   };
 
   const templateLabel = document.createElement('label');
@@ -469,6 +510,8 @@ export function Controls(): HTMLElement {
     saveBtn,
     loadInput,
     pdfBtn,
+    saveLibBtn,
+    openLibBtn,
     templateLabel,
     templateBtn,
     toggleSecondaryBtn,

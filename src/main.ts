@@ -9,6 +9,14 @@ import { playChart, stopPlayback, isPlaying } from './audio/player';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 app.append(Header(), Rail(), Grid(), Controls());
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      // ignore
+    });
+  });
+}
+
 const applyPrefs = () => {
   document.body.classList.toggle('dark', store.theme === 'dark');
   document.body.style.setProperty('--font-size', `${store.fontSize}px`);
