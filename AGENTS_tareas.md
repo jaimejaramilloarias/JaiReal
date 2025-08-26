@@ -6,7 +6,7 @@ Convenciones: [ ] pendiente · [x] hecho
 0. Lineamientos Técnicos Generales
    [x] Vite + TypeScript + HTML/CSS; ESLint+Prettier; TS strict; arquitectura modular; Vitest+Playwright.
    0B) Documentación
-   [ ] README con instrucciones básicas.
+   [x] README con instrucciones básicas.
 
 1. Inicialización
    [x] Proyecto Vite TS + CI.
@@ -20,10 +20,11 @@ Convenciones: [ ] pendiente · [x] hecho
 4. UI Base
    [x] Encabezado, riel, grid de compases, controles.
    4B) Estilos responsivos
-   [ ] CSS responsive mínimo.
+   [x] CSS responsive mínimo.
 
 5. Edición 4 acordes/compás
-   [ ] Slots 1–4 contenteditable; atajos; copiar/pegar.
+   [x] Slots 1–4 contenteditable.
+   [ ] Atajos; copiar/pegar.
 
 6. Renglón secundario
    [ ] Por beat; estilo pequeño; persistencia/imprimir.
