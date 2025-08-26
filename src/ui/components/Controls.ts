@@ -86,6 +86,20 @@ export function Controls(): HTMLElement {
     store.transpose(-1);
   };
 
+  const transposeInfo = document.createElement('span');
+  const updateTransposeInfo = () => {
+    const val = store.manualTranspose;
+    const sign = val > 0 ? '+' : '';
+    transposeInfo.textContent = `Transposición: ${sign}${val}`;
+  };
+  updateTransposeInfo();
+
+  const resetTransposeBtn = document.createElement('button');
+  resetTransposeBtn.textContent = 'Reset Transposición';
+  resetTransposeBtn.onclick = () => {
+    store.resetTranspose();
+  };
+
   const instrumentLabel = document.createElement('label');
   instrumentLabel.textContent = 'Vista: ';
   const instrumentSelect = document.createElement('select');
@@ -185,6 +199,7 @@ export function Controls(): HTMLElement {
     updateToggleText();
     updateMarkerSelect();
     updateViewControls();
+    updateTransposeInfo();
   });
   updateMarkerSelect();
 
@@ -195,6 +210,8 @@ export function Controls(): HTMLElement {
     toggleSecondaryBtn,
     transposeUpBtn,
     transposeDownBtn,
+    transposeInfo,
+    resetTransposeBtn,
     instrumentLabel,
     instrumentSelect,
     accidentalLabel,

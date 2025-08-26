@@ -38,6 +38,7 @@ export class ChartStore {
   showSecondary: boolean;
   instrument: Instrument;
   preferSharps: boolean;
+  manualTranspose = 0;
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
@@ -149,7 +150,11 @@ export class ChartStore {
     this.listeners.forEach((l) => l());
   }
 
-  transpose(semitones: number, preferSharps = true) {
+  transpose(
+    semitones: number,
+    preferSharps: boolean = this.preferSharps,
+    track = true,
+  ) {
     this.chart.sections.forEach((section) => {
       section.measures.forEach((m) => {
         m.beats.forEach((b) => {
@@ -160,16 +165,25 @@ export class ChartStore {
         });
       });
     });
+    if (track) this.manualTranspose += semitones;
     this.setChart(this.chart);
   }
 
   setInstrument(instrument: Instrument, preferSharps = this.preferSharps) {
     const diff =
       instrumentSemitones[instrument] - instrumentSemitones[this.instrument];
-    this.transpose(diff, preferSharps);
+    this.transpose(diff, preferSharps, false);
     this.instrument = instrument;
     this.preferSharps = preferSharps;
     this.persistView();
+  }
+
+  resetTranspose() {
+    if (this.manualTranspose !== 0) {
+      this.transpose(-this.manualTranspose, this.preferSharps, false);
+      this.manualTranspose = 0;
+      this.listeners.forEach((l) => l());
+    }
   }
 
   toJSON() {

@@ -68,6 +68,14 @@ Convenciones: [ ] pendiente · [x] hecho
    [x] Hecho.
 
 9C) Sincronizar botones de transposición manual con vista de instrumento
+[x] Hecho.
+9D) Mostrar en la interfaz la cantidad de transposición manual
+[x] Hecho.
+9E) Botón para resetear la transposición manual
+[x] Hecho.
+9F) Atajos de teclado para transposición manual
+[ ] Pendiente.
+9G) Persistir la transposición manual entre sesiones
 [ ] Pendiente.
 
 10. Plantillas
