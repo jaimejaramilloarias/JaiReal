@@ -86,6 +86,53 @@ export function Controls(): HTMLElement {
     store.transpose(-1);
   };
 
+  const instrumentLabel = document.createElement('label');
+  instrumentLabel.textContent = 'Vista: ';
+  const instrumentSelect = document.createElement('select');
+  [
+    ['C', 'Concierto'],
+    ['Bb', 'Bb'],
+    ['Eb', 'Eb'],
+    ['F', 'F'],
+  ].forEach(([value, text]) => {
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = text;
+    instrumentSelect.appendChild(opt);
+  });
+
+  const accidentalLabel = document.createElement('label');
+  accidentalLabel.textContent = 'Preferir: ';
+  const accidentalSelect = document.createElement('select');
+  [
+    ['sharp', '♯'],
+    ['flat', '♭'],
+  ].forEach(([value, text]) => {
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = text;
+    accidentalSelect.appendChild(opt);
+  });
+
+  const updateViewControls = () => {
+    instrumentSelect.value = store.instrument;
+    accidentalSelect.value = store.preferSharps ? 'sharp' : 'flat';
+  };
+  updateViewControls();
+
+  instrumentSelect.onchange = () => {
+    store.setInstrument(
+      instrumentSelect.value as 'C' | 'Bb' | 'Eb' | 'F',
+      accidentalSelect.value === 'sharp',
+    );
+  };
+  accidentalSelect.onchange = () => {
+    store.setInstrument(
+      instrumentSelect.value as 'C' | 'Bb' | 'Eb' | 'F',
+      accidentalSelect.value === 'sharp',
+    );
+  };
+
   const markerLabel = document.createElement('label');
   markerLabel.textContent = 'Marcador: ';
   const markerSelect = document.createElement('select');
@@ -137,6 +184,7 @@ export function Controls(): HTMLElement {
   store.subscribe(() => {
     updateToggleText();
     updateMarkerSelect();
+    updateViewControls();
   });
   updateMarkerSelect();
 
@@ -147,6 +195,10 @@ export function Controls(): HTMLElement {
     toggleSecondaryBtn,
     transposeUpBtn,
     transposeDownBtn,
+    instrumentLabel,
+    instrumentSelect,
+    accidentalLabel,
+    accidentalSelect,
     markerLabel,
     messageEl,
   );

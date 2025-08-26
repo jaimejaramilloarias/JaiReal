@@ -65,7 +65,10 @@ Convenciones: [ ] pendiente · [x] hecho
    9A) Semitonos sobre toda la partitura
    [x] Hecho.
    9B) Vistas Concierto/Bb/Eb/F y preferencia ♯/♭
-   [ ] Pendiente.
+   [x] Hecho.
+
+9C) Sincronizar botones de transposición manual con vista de instrumento
+[ ] Pendiente.
 
 10. Plantillas
     [ ] AABA/Blues/Rhythm Changes/Intro-Tag-Out.

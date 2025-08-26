@@ -8,6 +8,15 @@ import { transposeChord } from '../core/transpose';
 
 const STORAGE_KEY = 'jaireal.chart';
 const SHOW_SECONDARY_KEY = 'jaireal.showSecondary';
+const VIEW_KEY = 'jaireal.view';
+
+type Instrument = 'C' | 'Bb' | 'Eb' | 'F';
+const instrumentSemitones: Record<Instrument, number> = {
+  C: 0,
+  Bb: 2,
+  Eb: 9,
+  F: 7,
+};
 
 const demoChart = (): Chart => ({
   schemaVersion,
@@ -27,6 +36,8 @@ type Listener = () => void;
 export class ChartStore {
   chart: Chart;
   showSecondary: boolean;
+  instrument: Instrument;
+  preferSharps: boolean;
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
@@ -35,6 +46,9 @@ export class ChartStore {
   constructor() {
     this.chart = this.loadChart();
     this.showSecondary = this.loadShowSecondary();
+    const view = this.loadView();
+    this.instrument = view.instrument;
+    this.preferSharps = view.preferSharps;
   }
 
   private loadChart(): Chart {
@@ -69,6 +83,31 @@ export class ChartStore {
     localStorage.setItem(
       SHOW_SECONDARY_KEY,
       JSON.stringify(this.showSecondary),
+    );
+  }
+
+  private loadView(): { instrument: Instrument; preferSharps: boolean } {
+    try {
+      const raw = localStorage.getItem(VIEW_KEY);
+      if (raw) {
+        return JSON.parse(raw) as {
+          instrument: Instrument;
+          preferSharps: boolean;
+        };
+      }
+    } catch {
+      // ignore
+    }
+    return { instrument: 'C', preferSharps: true };
+  }
+
+  private persistView() {
+    localStorage.setItem(
+      VIEW_KEY,
+      JSON.stringify({
+        instrument: this.instrument,
+        preferSharps: this.preferSharps,
+      }),
     );
   }
 
@@ -122,6 +161,15 @@ export class ChartStore {
       });
     });
     this.setChart(this.chart);
+  }
+
+  setInstrument(instrument: Instrument, preferSharps = this.preferSharps) {
+    const diff =
+      instrumentSemitones[instrument] - instrumentSemitones[this.instrument];
+    this.transpose(diff, preferSharps);
+    this.instrument = instrument;
+    this.preferSharps = preferSharps;
+    this.persistView();
   }
 
   toJSON() {

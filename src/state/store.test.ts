@@ -150,4 +150,47 @@ describe('ChartStore', () => {
     expect(beats[1].chord).toBe('G#');
     expect(beats[1].secondary).toBe('A');
   });
+
+  it('sets instrument views and accidental preference', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: 'C' },
+                { chord: 'Db' },
+                { chord: '', secondary: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    s.setInstrument('Bb');
+    let beats = s.chart.sections[0].measures[0].beats;
+    expect(beats[0].chord).toBe('D');
+    expect(beats[1].chord).toBe('D#');
+
+    s.setInstrument('Bb', false);
+    beats = s.chart.sections[0].measures[0].beats;
+    expect(beats[1].chord).toBe('Eb');
+
+    s.setInstrument('C');
+    beats = s.chart.sections[0].measures[0].beats;
+    expect(beats[0].chord).toBe('C');
+  });
+
+  it('persists instrument settings', () => {
+    const s = new ChartStore();
+    s.setInstrument('Eb', false);
+    const s2 = new ChartStore();
+    expect(s2.instrument).toBe('Eb');
+    expect(s2.preferSharps).toBe(false);
+  });
 });
