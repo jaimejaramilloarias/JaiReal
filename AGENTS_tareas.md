@@ -1,56 +1,59 @@
-
 PLAN DE TAREAS — EDITOR DE CIFRADOS: "JaiReal-PRO" (Checklist para CODEX) — con ONLINE
 Autor: Jaime Jaramillo Arias — Fecha: 2025-08-25
 
 Convenciones: [ ] pendiente · [x] hecho
 
-0) Lineamientos Técnicos Generales
-[ ] Vite + TypeScript + HTML/CSS; ESLint+Prettier; TS strict; arquitectura modular; Vitest+Playwright.
+0. Lineamientos Técnicos Generales
+   [x] Vite + TypeScript + HTML/CSS; ESLint+Prettier; TS strict; arquitectura modular; Vitest+Playwright.
+   0B) Documentación
+   [ ] README con instrucciones básicas.
 
-1) Inicialización
-[ ] Proyecto Vite TS + CI.
+1. Inicialización
+   [x] Proyecto Vite TS + CI.
 
-2) Modelo de Datos
-[ ] Tipos BeatSlot/Measure/Section/Chart/Markers/Volta; schemaVersion; tests.
+2. Modelo de Datos
+   [x] Tipos BeatSlot/Measure/Section/Chart/Markers/Volta; schemaVersion; tests.
 
-3) Estado y Persistencia Local
-[ ] Store + autosave local; abrir/guardar JSON.
+3. Estado y Persistencia Local
+   [x] Store + autosave local; abrir/guardar JSON.
 
-4) UI Base
-[ ] Encabezado, riel, grid de compases, controles.
+4. UI Base
+   [x] Encabezado, riel, grid de compases, controles.
+   4B) Estilos responsivos
+   [ ] CSS responsive mínimo.
 
-5) Edición 4 acordes/compás
-[ ] Slots 1–4 contenteditable; atajos; copiar/pegar.
+5. Edición 4 acordes/compás
+   [ ] Slots 1–4 contenteditable; atajos; copiar/pegar.
 
-6) Renglón secundario
-[ ] Por beat; estilo pequeño; persistencia/imprimir.
+6. Renglón secundario
+   [ ] Por beat; estilo pequeño; persistencia/imprimir.
 
-7) Marcadores
-[ ] %, ||:, :||, Segno/Coda/Fine/D.C./D.S./To Coda con toolbar y reglas.
+7. Marcadores
+   [ ] %, ||:, :||, Segno/Coda/Fine/D.C./D.S./To Coda con toolbar y reglas.
 
-8) Voltas
-[ ] 1ª/2ª con rango; overlay y persistencia.
+8. Voltas
+   [ ] 1ª/2ª con rango; overlay y persistencia.
 
-9) Transposición
-[ ] Semitonos + vistas Concierto/Bb/Eb/F; ♯/♭.
+9. Transposición
+   [ ] Semitonos + vistas Concierto/Bb/Eb/F; ♯/♭.
 
-10) Plantillas
-[ ] AABA/Blues/Rhythm Changes/Intro-Tag-Out.
+10. Plantillas
+    [ ] AABA/Blues/Rhythm Changes/Intro-Tag-Out.
 
-11) Exportación
-[ ] PDF; (PNG/SVG en v1).
+11. Exportación
+    [ ] PDF; (PNG/SVG en v1).
 
-12) Biblioteca local
-[ ] IndexedDB; etiquetas + búsqueda básica.
+12. Biblioteca local
+    [ ] IndexedDB; etiquetas + búsqueda básica.
 
-13) Importadores
-[ ] ChordPro/iReal/CSV; tests.
+13. Importadores
+    [ ] ChordPro/iReal/CSV; tests.
 
-14) Preferencias/Vista
-[ ] Tema, fuentes/tamaños, ♯/♭.
+14. Preferencias/Vista
+    [ ] Tema, fuentes/tamaños, ♯/♭.
 
-15) PWA / Offline
-[ ] Service Worker + manifest; app shell offline; onLine indicator.
+15. PWA / Offline
+    [ ] Service Worker + manifest; app shell offline; onLine indicator.
 
 15B) Online / Sincronización y Nube
 Objetivo: offline-first con sync en la nube, compartir y backups.
@@ -84,16 +87,16 @@ Criterios de aceptación (15B)
 [ ] Compartir enlace de lectura y revocar acceso.
 [ ] Conflictos detectados con opción “local” o “remoto”.
 
-16) Accesibilidad e i18n
-[ ] Teclado, roles/aria, atajos; ES/EN.
+16. Accesibilidad e i18n
+    [ ] Teclado, roles/aria, atajos; ES/EN.
 
-17) QA/E2E
-[ ] Vitest (modelo/transpose/parsers); Playwright (MVP y flujos online); CI artefactos.
+17. QA/E2E
+    [ ] Vitest (modelo/transpose/parsers); Playwright (MVP y flujos online); CI artefactos.
 
-18) Estándares
-[ ] TS estricto, lógica pura en core, sin innerHTML, eventos delegados, Conventional Commits.
+18. Estándares
+    [ ] TS estricto, lógica pura en core, sin innerHTML, eventos delegados, Conventional Commits.
 
-19) Hitos
-[ ] MVP: 1–8,10,11(PDF),12(min),15(PWA),17 parcial,18.
-[ ] v1: 9,11(PNG/SVG),13,14,15B (sync+share lectura),16,17 completo.
-[ ] v2: colaboración tiempo real, LMS, lote PDF/ZIP, diffs y merge por compás.
+19. Hitos
+    [ ] MVP: 1–8,10,11(PDF),12(min),15(PWA),17 parcial,18.
+    [ ] v1: 9,11(PNG/SVG),13,14,15B (sync+share lectura),16,17 completo.
+    [ ] v2: colaboración tiempo real, LMS, lote PDF/ZIP, diffs y merge por compás.
