@@ -88,7 +88,9 @@ Convenciones: [ ] pendiente · [x] hecho
     [x] AABA/Blues/Rhythm Changes/Intro-Tag-Out.
 
 11. Exportación
-    [ ] PDF; (PNG/SVG en v1).
+    [x] PDF; (PNG/SVG en v1).
+    11B) Pruebas automáticas para exportación PDF
+    [x] Hecho.
 
 12. Biblioteca local
     [ ] IndexedDB; etiquetas + búsqueda básica.
@@ -183,4 +185,6 @@ Criterios de aceptación (15B)
     20Q) Mostrar atajo de volumen maestro en la interfaz
     [x] Indicar en la UI los atajos de teclado para el volumen maestro.
     20R) Atajo para restablecer volumen maestro
-    [ ] Permitir volver el volumen maestro a 100% con un atajo de teclado.
+    [x] Permitir volver el volumen maestro a 100% con un atajo de teclado.
+    20S) Pruebas automáticas para reset de volumen maestro
+    [x] Hecho.

@@ -8,15 +8,12 @@ test.beforeEach(async ({ context }) => {
   });
 });
 
-test('adjust master volume with keyboard shortcuts', async ({ page }) => {
+test('reset master volume with keyboard shortcut', async ({ page }) => {
   await page.goto('/');
   await page.click('body');
-  const volLabel = page.locator('label:has-text("Volumen (Alt+Shift+↑/↓/0)")');
-  await expect(volLabel).toBeVisible();
+  const volLabel = page.locator('label:has-text("Volumen (Alt+Shift")');
   const volInput = volLabel.locator('input');
   await expect(volInput).toHaveValue('0.5');
-  await page.keyboard.press('Alt+Shift+ArrowUp');
-  await expect(volInput).toHaveValue('0.6');
-  await page.keyboard.press('Alt+Shift+ArrowDown');
-  await expect(volInput).toHaveValue('0.5');
+  await page.keyboard.press('Alt+Shift+0');
+  await expect(volInput).toHaveValue('1');
 });

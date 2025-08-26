@@ -28,5 +28,8 @@
     "typescript": "~5.8.3",
     "vite": "^7.1.2",
     "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.2"
   }
 }

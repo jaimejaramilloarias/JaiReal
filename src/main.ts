@@ -32,6 +32,11 @@ window.addEventListener('keydown', (ev) => {
     ev.preventDefault();
     return;
   }
+  if (ev.altKey && ev.shiftKey && ev.key === '0') {
+    store.setMasterVolume(1);
+    ev.preventDefault();
+    return;
+  }
   if (ev.ctrlKey && ev.shiftKey && ev.key === 'ArrowUp') {
     const vol = Math.min(
       1,

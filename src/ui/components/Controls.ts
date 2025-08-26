@@ -6,6 +6,7 @@ import {
   playSectionLoop,
   setMasterVolume,
 } from '../../audio/player';
+import { exportChartPDF } from '../../export/pdf';
 import { getTemplate, type TemplateName } from '../../core/templates';
 
 export function Controls(): HTMLElement {
@@ -65,6 +66,12 @@ export function Controls(): HTMLElement {
       const text = await file.text();
       store.fromJSON(text);
     }
+  };
+
+  const pdfBtn = document.createElement('button');
+  pdfBtn.textContent = 'Exportar PDF';
+  pdfBtn.onclick = () => {
+    exportChartPDF(store.chart);
   };
 
   const templateLabel = document.createElement('label');
@@ -161,7 +168,7 @@ export function Controls(): HTMLElement {
   tempoLabel.appendChild(tempoInput);
 
   const masterVolLabel = document.createElement('label');
-  const masterVolShortcut = 'Alt+Shift+↑/↓';
+  const masterVolShortcut = 'Alt+Shift+↑/↓/0';
   masterVolLabel.textContent = `Volumen (${masterVolShortcut}): `;
   masterVolLabel.title = masterVolShortcut;
   const masterVolInput = document.createElement('input');
@@ -386,6 +393,7 @@ export function Controls(): HTMLElement {
   el.append(
     saveBtn,
     loadInput,
+    pdfBtn,
     templateLabel,
     templateBtn,
     toggleSecondaryBtn,
