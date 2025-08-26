@@ -135,7 +135,7 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 [x] users, charts, revisions, shares, collections, tags; índices.
 
 15B.3 Sincronización
-[ ] Outbox IndexedDB con clientMutationId; LWW; pull/push delta; reintentos; UI de estado; conflictos básicos.
+[x] Outbox IndexedDB con clientMutationId; LWW; pull/push delta; reintentos; UI de estado; conflictos básicos.
 
 15B.4 Autenticación y permisos
 [ ] Email/Google; roles owner/editor/commenter/reader; enlaces revocables; auditoría mínima.
@@ -150,7 +150,7 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 [x] HTTPS, CSP, SameSite, rate-limits, size-limits, backups/restore por chart.
 
 15B.8 UX de red
-[ ] Indicadores de red y sync; Forzar sync; Resolver conflicto.
+[x] Indicadores de red y sync; Forzar sync; Resolver conflicto.
 
 Criterios de aceptación (15B)
 [ ] Login → editar offline → reconectar → sync automático ok.
