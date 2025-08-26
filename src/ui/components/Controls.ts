@@ -19,6 +19,7 @@ export function Controls(): HTMLElement {
   messageEl.append(messageText, closeBtn);
 
   let hideTimeout: number | undefined;
+  let lastFocused: HTMLElement | null = null;
   function hideMessage() {
     if (hideTimeout) {
       clearTimeout(hideTimeout);
@@ -26,6 +27,13 @@ export function Controls(): HTMLElement {
     }
     messageText.textContent = '';
     messageEl.style.display = 'none';
+    if (lastFocused) {
+      const toFocus = lastFocused;
+      lastFocused = null;
+      setTimeout(() => {
+        toFocus.focus();
+      });
+    }
   }
   closeBtn.onclick = hideMessage;
 
@@ -64,6 +72,18 @@ export function Controls(): HTMLElement {
   updateToggleText();
   toggleSecondaryBtn.onclick = () => {
     store.toggleSecondary();
+  };
+
+  const transposeUpBtn = document.createElement('button');
+  transposeUpBtn.textContent = 'Transponer +1';
+  transposeUpBtn.onclick = () => {
+    store.transpose(1);
+  };
+
+  const transposeDownBtn = document.createElement('button');
+  transposeDownBtn.textContent = 'Transponer -1';
+  transposeDownBtn.onclick = () => {
+    store.transpose(-1);
   };
 
   const markerLabel = document.createElement('label');
@@ -107,6 +127,7 @@ export function Controls(): HTMLElement {
   store.onMessage((msg) => {
     messageText.textContent = msg;
     messageEl.style.display = 'flex';
+    lastFocused = document.activeElement as HTMLElement | null;
     messageEl.focus();
     hideTimeout = window.setTimeout(() => {
       hideMessage();
@@ -120,6 +141,14 @@ export function Controls(): HTMLElement {
   updateMarkerSelect();
 
   markerLabel.appendChild(markerSelect);
-  el.append(saveBtn, loadInput, toggleSecondaryBtn, markerLabel, messageEl);
+  el.append(
+    saveBtn,
+    loadInput,
+    toggleSecondaryBtn,
+    transposeUpBtn,
+    transposeDownBtn,
+    markerLabel,
+    messageEl,
+  );
   return el;
 }
