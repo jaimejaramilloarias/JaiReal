@@ -169,4 +169,8 @@ Criterios de aceptación (15B)
     20J) Atajo de teclado para reproducir/detener
     [x] Espacio para iniciar o detener la reproducción.
     20K) Control de tempo con la rueda del ratón
-    [ ] Ajustar el tempo girando la rueda sobre el control correspondiente.
+    [x] Ajustar el tempo girando la rueda sobre el control correspondiente.
+    20L) Mostrar en la interfaz el uso de la rueda
+    [x] Indicar en la UI que se puede usar la rueda del ratón para el tempo.
+    20M) Pruebas automáticas para la rueda de tempo
+    [x] Hecho.
