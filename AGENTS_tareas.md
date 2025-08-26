@@ -41,10 +41,12 @@ Convenciones: [ ] pendiente · [x] hecho
    6D) Atajo de teclado para alternar renglón secundario
    [x] Hecho.
    6E) Mostrar en la interfaz el atajo de teclado
-   [ ] Pendiente.
+   [x] Hecho.
 
 7. Marcadores
-   [ ] %, ||:, :||, Segno/Coda/Fine/D.C./D.S./To Coda con toolbar y reglas.
+   [x] %, ||:, :||, Segno/Coda/Fine/D.C./D.S./To Coda con toolbar y reglas.
+   7B) Validaciones y reglas de marcadores
+   [ ] Pendiente.
 
 8. Voltas
    [ ] 1ª/2ª con rango; overlay y persistencia.
