@@ -29,6 +29,16 @@ test('toggle theme persists', async ({ page }) => {
   expect(persisted).toBe(toggled);
 });
 
+test('auto-detects system theme', async ({ page }) => {
+  await page.evaluate(() => localStorage.removeItem('jaireal.theme'));
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.reload();
+  const body = page.locator('body');
+  await expect(body).toHaveClass(/dark/);
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(body).not.toHaveClass(/dark/);
+});
+
 test('prefer accidentals selection persists', async ({ page }) => {
   await page.goto('/');
   const select = page.locator('#accidental-select');
