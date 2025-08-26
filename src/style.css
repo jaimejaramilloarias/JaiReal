@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+header {
+  background: #222;
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
+
+.rail {
+  height: 20px;
+  background: #444;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.measure {
+  border: 1px solid #888;
+  width: 4rem;
+  height: 4rem;
+  display: inline-block;
+  margin-right: 0.25rem;
+}
+
+.controls {
+  margin: 1rem;
+}
