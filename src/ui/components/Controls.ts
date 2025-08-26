@@ -121,10 +121,21 @@ export function Controls(): HTMLElement {
   };
   tempoLabel.appendChild(tempoInput);
 
+  const metronomeBtn = document.createElement('button');
+  const updateMetronomeText = () => {
+    metronomeBtn.textContent = store.metronome
+      ? 'Desactivar metrónomo'
+      : 'Activar metrónomo';
+  };
+  updateMetronomeText();
+  metronomeBtn.onclick = () => {
+    store.toggleMetronome();
+  };
+
   const playBtn = document.createElement('button');
   playBtn.textContent = 'Reproducir';
   playBtn.onclick = () => {
-    playChart(store.chart, store.tempo);
+    playChart(store.chart, store.tempo, store.metronome);
   };
 
   const stopBtn = document.createElement('button');
@@ -234,6 +245,7 @@ export function Controls(): HTMLElement {
     updateViewControls();
     updateTransposeInfo();
     tempoInput.value = String(store.tempo);
+    updateMetronomeText();
   });
   updateMarkerSelect();
 
@@ -249,6 +261,7 @@ export function Controls(): HTMLElement {
     tempoLabel,
     playBtn,
     stopBtn,
+    metronomeBtn,
     instrumentLabel,
     instrumentSelect,
     accidentalLabel,

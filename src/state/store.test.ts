@@ -35,6 +35,15 @@ describe('ChartStore', () => {
     expect(s2.showSecondary).toBe(false);
   });
 
+  it('toggles and persists metronome', () => {
+    const s = new ChartStore();
+    expect(s.metronome).toBe(true);
+    s.toggleMetronome();
+    expect(s.metronome).toBe(false);
+    const s2 = new ChartStore();
+    expect(s2.metronome).toBe(false);
+  });
+
   it('selects measures and applies markers', () => {
     const s = new ChartStore();
     s.setChart({
