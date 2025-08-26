@@ -7,6 +7,24 @@ export function Controls(): HTMLElement {
 
   const messageEl = document.createElement('div');
   messageEl.className = 'message';
+  messageEl.setAttribute('role', 'alert');
+  const messageText = document.createElement('span');
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'message-close';
+  closeBtn.type = 'button';
+  closeBtn.textContent = '×';
+  messageEl.append(messageText, closeBtn);
+
+  let hideTimeout: number | undefined;
+  function hideMessage() {
+    if (hideTimeout) {
+      clearTimeout(hideTimeout);
+      hideTimeout = undefined;
+    }
+    messageText.textContent = '';
+    messageEl.style.display = 'none';
+  }
+  closeBtn.onclick = hideMessage;
 
   const saveBtn = document.createElement('button');
   saveBtn.textContent = 'Guardar JSON';
@@ -84,11 +102,10 @@ export function Controls(): HTMLElement {
   };
 
   store.onMessage((msg) => {
-    messageEl.textContent = msg;
-    messageEl.style.display = 'block';
-    setTimeout(() => {
-      messageEl.textContent = '';
-      messageEl.style.display = 'none';
+    messageText.textContent = msg;
+    messageEl.style.display = 'flex';
+    hideTimeout = window.setTimeout(() => {
+      hideMessage();
     }, 3000);
   });
 
