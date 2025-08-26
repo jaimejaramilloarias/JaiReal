@@ -46,6 +46,8 @@ Convenciones: [ ] pendiente · [x] hecho
 7. Marcadores
    [x] %, ||:, :||, Segno/Coda/Fine/D.C./D.S./To Coda con toolbar y reglas.
    7B) Validaciones y reglas de marcadores
+   [x] Hecho.
+   7C) Mensajes de error de validación en la UI
    [ ] Pendiente.
 
 8. Voltas

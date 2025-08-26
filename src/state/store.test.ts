@@ -64,4 +64,46 @@ describe('ChartStore', () => {
     s.setMarker('');
     expect(s.chart.sections[0].measures[0].markers).toBeUndefined();
   });
+
+  it('validates marker dependencies', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        {
+          name: 'A',
+          measures: [{ beats: [{ chord: 'C' }] }, { beats: [{ chord: 'D' }] }],
+        },
+      ],
+    });
+    s.selectMeasure(0, 0);
+    expect(s.setMarker('D.S.')).toBe(false);
+    expect(s.chart.sections[0].measures[0].markers).toBeUndefined();
+
+    s.selectMeasure(0, 1);
+    expect(s.setMarker('Segno')).toBe(true);
+
+    s.selectMeasure(0, 0);
+    expect(s.setMarker('D.S.')).toBe(true);
+  });
+
+  it('ensures single occurrence markers', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        {
+          name: 'A',
+          measures: [{ beats: [{ chord: 'C' }] }, { beats: [{ chord: 'D' }] }],
+        },
+      ],
+    });
+    s.selectMeasure(0, 0);
+    expect(s.setMarker('Coda')).toBe(true);
+    s.selectMeasure(0, 1);
+    expect(s.setMarker('Coda')).toBe(false);
+    expect(s.chart.sections[0].measures[1].markers).toBeUndefined();
+  });
 });

@@ -111,14 +111,85 @@ export class ChartStore {
     this.setChart(JSON.parse(json));
   }
 
-  setMarker(marker: Marker | '') {
-    this.updateSelectedMeasure((m) => {
-      if (marker) {
-        m.markers = [marker];
-      } else {
-        delete m.markers;
+  private notify(message: string) {
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.alert === 'function' &&
+      !process.env.VITEST
+    ) {
+      try {
+        window.alert(message);
+        return;
+      } catch {
+        // ignore
       }
+    }
+    console.warn(message);
+  }
+
+  private validateMarker(
+    marker: Marker,
+    sectionIndex: number,
+    measureIndex: number,
+  ): [boolean, string?] {
+    const markers: Marker[] = [];
+    this.chart.sections.forEach((s, si) => {
+      s.measures.forEach((m, mi) => {
+        if (si === sectionIndex && mi === measureIndex) return;
+        if (m.markers) markers.push(...m.markers);
+      });
     });
+    const has = (m: Marker) => markers.includes(m);
+    switch (marker) {
+      case 'Segno':
+        if (has('Segno')) return [false, 'Solo puede haber un Segno.'];
+        return [true];
+      case 'Coda':
+        if (has('Coda')) return [false, 'Solo puede haber una Coda.'];
+        return [true];
+      case 'Fine':
+        if (has('Fine')) return [false, 'Solo puede haber un Fine.'];
+        if (!has('D.C.') && !has('D.S.'))
+          return [false, 'Fine requiere D.C. o D.S.'];
+        return [true];
+      case 'D.S.':
+        if (has('D.S.')) return [false, 'Solo puede haber un D.S.'];
+        if (!has('Segno')) return [false, 'D.S. requiere un Segno.'];
+        return [true];
+      case 'To Coda':
+        if (has('To Coda')) return [false, 'Solo puede haber un To Coda.'];
+        if (!has('Coda')) return [false, 'To Coda requiere una Coda.'];
+        return [true];
+      case 'D.C.':
+        if (has('D.C.')) return [false, 'Solo puede haber un D.C.'];
+        return [true];
+      default:
+        return [true];
+    }
+  }
+
+  setMarker(marker: Marker | ''): boolean {
+    if (this.selectedSection === null || this.selectedMeasure === null)
+      return false;
+    const section = this.chart.sections[this.selectedSection];
+    const measure = section?.measures[this.selectedMeasure];
+    if (!measure) return false;
+    if (marker) {
+      const [ok, msg] = this.validateMarker(
+        marker,
+        this.selectedSection,
+        this.selectedMeasure,
+      );
+      if (!ok) {
+        if (msg) this.notify(msg);
+        return false;
+      }
+      measure.markers = [marker];
+    } else {
+      delete measure.markers;
+    }
+    this.setChart(this.chart);
+    return true;
   }
 }
 
