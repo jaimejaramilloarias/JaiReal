@@ -4,9 +4,9 @@ test('close marker validation message manually', async ({ page }) => {
   await page.goto('/');
   // Select first measure to enable marker selection
   await page.click('.measure');
-  const markerSelect = page.locator('select');
+  const markerSelect = page.getByLabel('Marcador:');
   await markerSelect.focus();
-  // Choose an invalid marker (Fine requires D.C. o D.S.)
+  // Choose an invalid marker (Fine requiere D.C. o D.S.)
   await markerSelect.selectOption('Fine');
   const message = page.locator('.message');
   await expect(message).toBeVisible();

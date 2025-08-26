@@ -193,4 +193,36 @@ describe('ChartStore', () => {
     expect(s2.instrument).toBe('Eb');
     expect(s2.preferSharps).toBe(false);
   });
+
+  it('syncs manual transpose with instrument view and tracks amount', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: 'C' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    s.setInstrument('C', false);
+    s.transpose(1);
+    let beat = s.chart.sections[0].measures[0].beats[0];
+    expect(beat.chord).toBe('Db');
+    expect(s.manualTranspose).toBe(1);
+    s.resetTranspose();
+    beat = s.chart.sections[0].measures[0].beats[0];
+    expect(beat.chord).toBe('C');
+    expect(s.manualTranspose).toBe(0);
+  });
 });
