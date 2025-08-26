@@ -1,6 +1,14 @@
 import 'fake-indexeddb/auto';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { saveChart, listCharts, getChart } from './library';
+import {
+  saveChart,
+  listCharts,
+  getChart,
+  markFavorite,
+  setStatus,
+  backupCharts,
+  restoreChartFromBackup,
+} from './library';
 import { schemaVersion, type Chart } from '../core/model';
 
 function sampleChart(title: string): Chart {
@@ -61,5 +69,39 @@ describe('library', () => {
     await saveChart(sampleChart('A Song'), 'A Song', []);
     const charts = await listCharts();
     expect(charts.map((c) => c.title)).toEqual(['A Song', 'B Song']);
+  });
+
+  it('marks favorites and filters', async () => {
+    const id1 = await saveChart(sampleChart('A'), 'A', []);
+    const id2 = await saveChart(sampleChart('B'), 'B', []);
+    await markFavorite(id2, true);
+    const favs = await listCharts({ favorite: true });
+    expect(favs).toHaveLength(1);
+    expect(favs[0].id).toBe(id2);
+    await markFavorite(id2, false);
+    const none = await listCharts({ favorite: true });
+    expect(none).toHaveLength(0);
+    expect(id1).toBeDefined();
+  });
+
+  it('sets status and filters', async () => {
+    const id = await saveChart(sampleChart('A'), 'A', []);
+    await setStatus(id, 'archived');
+    const archived = await listCharts({ status: 'archived' });
+    expect(archived).toHaveLength(1);
+    await setStatus(id, 'trashed');
+    const trashed = await listCharts({ status: 'trashed' });
+    expect(trashed).toHaveLength(1);
+    const active = await listCharts();
+    expect(active).toHaveLength(0);
+  });
+
+  it('backs up and restores chart', async () => {
+    const id = await saveChart(sampleChart('A'), 'A', []);
+    const ts = await backupCharts();
+    await saveChart(sampleChart('B'), 'B', [], id);
+    await restoreChartFromBackup(ts, id);
+    const chart = await getChart(id);
+    expect(chart?.title).toBe('A');
   });
 });

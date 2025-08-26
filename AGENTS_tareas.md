@@ -141,13 +141,13 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 [ ] Email/Google; roles owner/editor/commenter/reader; enlaces revocables; auditoría mínima.
 
 15B.5 Biblioteca cloud
-[ ] Listado con filtros; favoritos/archivados/papelera; backups diarios.
+[x] Listado con filtros; favoritos/archivados/papelera; backups diarios.
 
 15B.6 Import/Export online
 [ ] Parse en worker; export por lotes (PDF/ZIP) con cola.
 
 15B.7 Seguridad
-[ ] HTTPS, CSP, SameSite, rate-limits, size-limits, backups/restore por chart.
+[x] HTTPS, CSP, SameSite, rate-limits, size-limits, backups/restore por chart.
 
 15B.8 UX de red
 [ ] Indicadores de red y sync; Forzar sync; Resolver conflicto.
