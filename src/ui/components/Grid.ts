@@ -11,7 +11,7 @@ export function Grid(): HTMLElement {
   el.className = 'grid';
 
   const render = () => {
-    el.innerHTML = '';
+    while (el.firstChild) el.removeChild(el.firstChild);
     store.chart.sections.forEach((section, sIdx) => {
       const sectionEl = document.createElement('div');
       sectionEl.className = 'section';
@@ -191,7 +191,8 @@ export function Grid(): HTMLElement {
       el.appendChild(sectionEl);
 
       requestAnimationFrame(() => {
-        voltaContainer.innerHTML = '';
+        while (voltaContainer.firstChild)
+          voltaContainer.removeChild(voltaContainer.firstChild);
         section.measures.forEach((measure, mIdx) => {
           if (measure.volta && measure.volta.from === mIdx) {
             const startEl = measureEls[mIdx];

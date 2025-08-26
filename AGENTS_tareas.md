@@ -164,7 +164,7 @@ Criterios de aceptación (15B)
     16B) Sistema básico de i18n con toggle ES/EN
     [x] Hecho.
     16C) Traducir textos restantes de la interfaz
-    [ ] Pendiente.
+    [x] Hecho.
 
 17. QA/E2E
     [x] Vitest (modelo/transpose/parsers); Playwright (MVP y flujos online); CI artefactos.
@@ -172,7 +172,7 @@ Criterios de aceptación (15B)
     [x] Descargar navegadores antes de ejecutar pruebas e2e.
 
 18. Estándares
-    [ ] TS estricto, lógica pura en core, sin innerHTML, eventos delegados, Conventional Commits.
+    [x] TS estricto, lógica pura en core, sin innerHTML, eventos delegados, Conventional Commits.
 
 19. Hitos
     [ ] MVP: 1–8,10,11(PDF),12(min),15(PWA),17 parcial,18.
