@@ -95,7 +95,9 @@ Convenciones: [ ] pendiente · [x] hecho
 12. Biblioteca local
     [x] IndexedDB; etiquetas + búsqueda básica.
     12B) UI de biblioteca mejorada
-    [ ] Mostrar listado de charts con filtros avanzados.
+    [x] Mostrar listado de charts con filtros avanzados.
+    12C) Ordenar biblioteca por título
+    [ ] Permitir ordenar la lista de charts alfabéticamente.
 
 13. Importadores
     13A) CSV básico
@@ -119,7 +121,9 @@ Convenciones: [ ] pendiente · [x] hecho
 15. PWA / Offline
     [x] Service Worker + manifest; app shell offline; onLine indicator.
     15C) Estrategia de caché avanzada
-    [ ] cache-first para estáticos y network-first para datos.
+    [x] cache-first para estáticos y network-first para datos.
+    15D) Limpieza de caché obsoleta
+    [ ] Eliminar versiones antiguas de caché al activar el Service Worker.
 
 15B) Online / Sincronización y Nube
 Objetivo: offline-first con sync en la nube, compartir y backups.

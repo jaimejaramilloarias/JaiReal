@@ -56,8 +56,13 @@ export async function getChart(id: string): Promise<Chart | undefined> {
   return item?.chart;
 }
 
+interface ListFilters {
+  title?: string;
+  tag?: string;
+}
+
 export async function listCharts(
-  query?: string,
+  filters?: ListFilters,
 ): Promise<Array<{ id: string; title: string; tags: string[] }>> {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, 'readonly');
@@ -68,16 +73,19 @@ export async function listCharts(
     req.onerror = () => reject(req.error);
   });
   db.close();
-  if (!query) {
+  if (!filters) {
     return items.map(({ id, title, tags }) => ({ id, title, tags }));
   }
-  const q = query.toLowerCase();
+  const title = filters.title?.toLowerCase();
+  const tag = filters.tag?.toLowerCase();
   return items
-    .filter(
-      (it) =>
-        it.title.toLowerCase().includes(q) ||
-        it.tags.some((t) => t.toLowerCase().includes(q)),
-    )
+    .filter((it) => {
+      const matchTitle = title ? it.title.toLowerCase().includes(title) : true;
+      const matchTag = tag
+        ? it.tags.some((t) => t.toLowerCase().includes(tag))
+        : true;
+      return matchTitle && matchTag;
+    })
     .map(({ id, title, tags }) => ({ id, title, tags }));
 }
 

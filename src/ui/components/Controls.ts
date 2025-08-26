@@ -10,9 +10,9 @@ import { exportChartPDF } from '../../export/pdf';
 import { getTemplate, type TemplateName } from '../../core/templates';
 import {
   saveChart as saveLibraryChart,
-  listCharts as listLibraryCharts,
   getChart as getLibraryChart,
 } from '../../state/library';
+import { LibraryModal } from './LibraryModal';
 
 type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth';
 
@@ -98,23 +98,14 @@ export function Controls(): HTMLElement {
 
   const openLibBtn = document.createElement('button');
   openLibBtn.textContent = 'Abrir de biblioteca';
-  openLibBtn.onclick = async () => {
-    const query = prompt('Buscar');
-    const charts = await listLibraryCharts(query ?? undefined);
-    if (charts.length === 0) {
-      alert('No encontrado');
-      return;
-    }
-    const choices = charts.map((c, i) => `${i + 1}: ${c.title}`).join('\n');
-    const sel = prompt(`Elige chart:\n${choices}`);
-    const idx = sel ? Number(sel) - 1 : -1;
-    const item = charts[idx];
-    if (item) {
-      const chart = await getLibraryChart(item.id);
+  openLibBtn.onclick = () => {
+    const modal = LibraryModal(async (id) => {
+      const chart = await getLibraryChart(id);
       if (chart) {
         store.setChart(chart);
       }
-    }
+    });
+    document.body.appendChild(modal);
   };
 
   const templateLabel = document.createElement('label');
