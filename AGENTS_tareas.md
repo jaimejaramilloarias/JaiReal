@@ -159,4 +159,6 @@ Criterios de aceptación (15B)
     20E) Persistencia de preferencia de metrónomo
     [x] Recordar si el metrónomo está activado entre sesiones.
     20F) Control de volumen del metrónomo
-    [ ] Ajustar el volumen del clic del metrónomo.
+    [x] Ajustar el volumen del clic del metrónomo.
+    20G) Atajo de teclado para volumen del metrónomo
+    [ ] Permitir ajustar el volumen con el teclado.

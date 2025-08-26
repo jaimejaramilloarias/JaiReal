@@ -69,4 +69,30 @@ describe('playChart metronome', () => {
     player.playChart(chart, 120, true);
     expect(spy).toHaveBeenCalled();
   });
+
+  it('passes metronome volume to scheduleClick', () => {
+    const chart: Chart = {
+      schemaVersion: 1,
+      title: '',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const spy = vi.spyOn(player.internal, 'scheduleClick');
+    player.playChart(chart, 120, true, 0.3);
+    expect(spy).toHaveBeenCalled();
+    expect(spy.mock.calls[0][2]).toBe(0.3);
+  });
 });

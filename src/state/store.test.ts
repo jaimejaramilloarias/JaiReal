@@ -44,6 +44,15 @@ describe('ChartStore', () => {
     expect(s2.metronome).toBe(false);
   });
 
+  it('sets and persists metronome volume', () => {
+    const s = new ChartStore();
+    expect(s.metronomeVolume).toBe(1);
+    s.setMetronomeVolume(0.25);
+    expect(s.metronomeVolume).toBe(0.25);
+    const s2 = new ChartStore();
+    expect(s2.metronomeVolume).toBe(0.25);
+  });
+
   it('selects measures and applies markers', () => {
     const s = new ChartStore();
     s.setChart({
