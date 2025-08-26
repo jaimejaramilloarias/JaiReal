@@ -75,3 +75,9 @@ header {
     height: 3rem;
   }
 }
+
+@media print {
+  .secondary {
+    color: #000;
+  }
+}
