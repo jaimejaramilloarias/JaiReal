@@ -175,6 +175,10 @@ Criterios de aceptación (15B)
     20M) Pruebas automáticas para la rueda de tempo
     [x] Hecho.
     20N) Reproducción en bucle de sección
-    [ ] Permitir reproducir una sección de forma repetida.
+    [x] Permitir reproducir una sección de forma repetida.
     20O) Control de volumen maestro
-    [ ] Ajustar el volumen general de la reproducción.
+    [x] Ajustar el volumen general de la reproducción.
+    20P) Atajo de teclado para volumen maestro
+    [ ] Permitir ajustar el volumen maestro con combinaciones de teclas.
+    20Q) Mostrar atajo de volumen maestro en la interfaz
+    [ ] Indicar en la UI los atajos de teclado para el volumen maestro.

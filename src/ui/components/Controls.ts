@@ -1,6 +1,11 @@
 import { store } from '../../state/store';
 import type { Marker } from '../../core/model';
-import { playChart, stopPlayback } from '../../audio/player';
+import {
+  playChart,
+  stopPlayback,
+  playSectionLoop,
+  setMasterVolume,
+} from '../../audio/player';
 import { getTemplate, type TemplateName } from '../../core/templates';
 
 export function Controls(): HTMLElement {
@@ -155,6 +160,22 @@ export function Controls(): HTMLElement {
   });
   tempoLabel.appendChild(tempoInput);
 
+  const masterVolLabel = document.createElement('label');
+  masterVolLabel.textContent = 'Volumen: ';
+  const masterVolInput = document.createElement('input');
+  masterVolInput.type = 'range';
+  masterVolInput.min = '0';
+  masterVolInput.max = '1';
+  masterVolInput.step = '0.01';
+  masterVolInput.value = String(store.masterVolume);
+  masterVolInput.oninput = () => {
+    const val = Number(masterVolInput.value);
+    if (!Number.isNaN(val)) {
+      store.setMasterVolume(val);
+    }
+  };
+  masterVolLabel.appendChild(masterVolInput);
+
   const metronomeBtn = document.createElement('button');
   const updateMetronomeText = () => {
     metronomeBtn.textContent = store.metronome
@@ -189,6 +210,7 @@ export function Controls(): HTMLElement {
   playBtn.textContent = `Reproducir (${playShortcut})`;
   playBtn.title = playShortcut;
   playBtn.onclick = () => {
+    setMasterVolume(store.masterVolume);
     playChart(store.chart, store.tempo, store.metronome, store.metronomeVolume);
   };
 
@@ -197,6 +219,21 @@ export function Controls(): HTMLElement {
   stopBtn.title = playShortcut;
   stopBtn.onclick = () => {
     stopPlayback();
+  };
+
+  const loopBtn = document.createElement('button');
+  loopBtn.textContent = 'Repetir sección';
+  loopBtn.onclick = () => {
+    if (store.selectedSection !== null) {
+      setMasterVolume(store.masterVolume);
+      playSectionLoop(
+        store.chart,
+        store.selectedSection,
+        store.tempo,
+        store.metronome,
+        store.metronomeVolume,
+      );
+    }
   };
 
   const instrumentLabel = document.createElement('label');
@@ -339,6 +376,7 @@ export function Controls(): HTMLElement {
     tempoInput.value = String(store.tempo);
     updateMetronomeText();
     metronomeVolInput.value = String(store.metronomeVolume);
+    masterVolInput.value = String(store.masterVolume);
   });
   updateMarkerSelect();
 
@@ -354,9 +392,11 @@ export function Controls(): HTMLElement {
     transposeInfo,
     resetTransposeBtn,
     tempoLabel,
+    masterVolLabel,
     metronomeVolLabel,
     playBtn,
     stopBtn,
+    loopBtn,
     metronomeBtn,
     instrumentLabel,
     instrumentSelect,

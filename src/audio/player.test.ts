@@ -12,7 +12,10 @@ class FakeOscillator {
 
 class FakeGain {
   gain = {
-    setValueAtTime() {},
+    value: 1,
+    setValueAtTime(v: number) {
+      this.value = v;
+    },
     exponentialRampToValueAtTime() {},
   };
   connect() {}
@@ -94,5 +97,90 @@ describe('playChart metronome', () => {
     player.playChart(chart, 120, true, 0.3);
     expect(spy).toHaveBeenCalled();
     expect(spy.mock.calls[0][2]).toBe(0.3);
+  });
+});
+
+describe('master volume', () => {
+  it('updates master gain value', () => {
+    const chart: Chart = {
+      schemaVersion: 1,
+      title: '',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: 'C' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    player.setMasterVolume(0.5);
+    player.playChart(chart, 120, false);
+    expect(player.getMasterVolume()).toBe(0.5);
+  });
+});
+
+describe('playSectionLoop', () => {
+  it('schedules repeat', () => {
+    const chart: Chart = {
+      schemaVersion: 1,
+      title: '',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const spy = vi.spyOn(globalThis, 'setTimeout');
+    player.playSectionLoop(chart, 0, 60, false);
+    expect(spy).toHaveBeenCalled();
+    const delay = spy.mock.calls[0][1] as number;
+    expect(delay).toBe(4000);
+    player.stopPlayback();
+    spy.mockRestore();
+  });
+
+  it('clears repeat timer on stop', () => {
+    const chart: Chart = {
+      schemaVersion: 1,
+      title: '',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const clearSpy = vi.spyOn(globalThis, 'clearTimeout');
+    player.playSectionLoop(chart, 0, 60, false);
+    player.stopPlayback();
+    expect(clearSpy).toHaveBeenCalled();
+    clearSpy.mockRestore();
   });
 });
