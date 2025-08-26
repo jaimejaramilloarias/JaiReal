@@ -3,6 +3,8 @@ import type { BeatSlot, Measure } from '../../core/model';
 
 let beatClipboard: BeatSlot | null = null;
 let measureClipboard: Measure | null = null;
+let dragIndex: number | null = null;
+let dragSection: number | null = null;
 
 export function Grid(): HTMLElement {
   const el = document.createElement('div');
@@ -10,7 +12,7 @@ export function Grid(): HTMLElement {
 
   const render = () => {
     el.innerHTML = '';
-    store.chart.sections.forEach((section) => {
+    store.chart.sections.forEach((section, sIdx) => {
       const sectionEl = document.createElement('div');
       sectionEl.className = 'section';
       const title = document.createElement('div');
@@ -18,9 +20,33 @@ export function Grid(): HTMLElement {
       title.textContent = section.name;
       sectionEl.appendChild(title);
 
-      section.measures.forEach((measure) => {
+      section.measures.forEach((measure, mIdx) => {
         const measureEl = document.createElement('div');
         measureEl.className = 'measure';
+        measureEl.draggable = true;
+        measureEl.addEventListener('dragstart', (ev) => {
+          ev.dataTransfer?.setData('text/plain', '');
+          (ev.dataTransfer || ({} as DataTransfer)).effectAllowed = 'move';
+          dragSection = sIdx;
+          dragIndex = mIdx;
+        });
+        measureEl.addEventListener('dragover', (ev) => {
+          ev.preventDefault();
+          ev.dataTransfer!.dropEffect = 'move';
+        });
+        measureEl.addEventListener('drop', (ev) => {
+          ev.preventDefault();
+          if (dragSection === sIdx && dragIndex !== null) {
+            const measures = section.measures;
+            const [m] = measures.splice(dragIndex, 1);
+            let insertAt = mIdx;
+            if (dragIndex < mIdx) insertAt--;
+            measures.splice(insertAt, 0, m);
+            store.setChart(store.chart);
+          }
+          dragIndex = null;
+          dragSection = null;
+        });
 
         for (let b = 0; b < 4; b++) {
           if (!measure.beats[b]) {
