@@ -82,6 +82,12 @@ header {
   margin: 1rem;
 }
 
+.message {
+  color: #c00;
+  margin-top: 0.5rem;
+  display: none;
+}
+
 @media (max-width: 600px) {
   .grid {
     padding: 0.5rem;

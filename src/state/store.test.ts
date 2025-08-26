@@ -106,4 +106,20 @@ describe('ChartStore', () => {
     expect(s.setMarker('Coda')).toBe(false);
     expect(s.chart.sections[0].measures[1].markers).toBeUndefined();
   });
+
+  it('notifies on invalid markers', () => {
+    const s = new ChartStore();
+    let msg = '';
+    s.onMessage((m) => {
+      msg = m;
+    });
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [{ name: 'A', measures: [{ beats: [{ chord: 'C' }] }] }],
+    });
+    s.selectMeasure(0, 0);
+    s.setMarker('D.S.');
+    expect(msg).toBe('D.S. requiere un Segno.');
+  });
 });

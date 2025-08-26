@@ -48,6 +48,8 @@ Convenciones: [ ] pendiente · [x] hecho
    7B) Validaciones y reglas de marcadores
    [x] Hecho.
    7C) Mensajes de error de validación en la UI
+   [x] Hecho.
+   7D) Botón para cerrar mensajes de error manualmente
    [ ] Pendiente.
 
 8. Voltas

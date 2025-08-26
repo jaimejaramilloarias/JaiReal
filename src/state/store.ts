@@ -29,6 +29,7 @@ export class ChartStore {
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
+  private messageListeners: Set<(msg: string) => void> = new Set();
 
   constructor() {
     this.chart = this.loadChart();
@@ -75,6 +76,11 @@ export class ChartStore {
     return () => this.listeners.delete(listener);
   }
 
+  onMessage(listener: (msg: string) => void) {
+    this.messageListeners.add(listener);
+    return () => this.messageListeners.delete(listener);
+  }
+
   setChart(chart: Chart) {
     this.chart = chart;
     this.persist();
@@ -112,6 +118,10 @@ export class ChartStore {
   }
 
   private notify(message: string) {
+    if (this.messageListeners.size) {
+      this.messageListeners.forEach((l) => l(message));
+      return;
+    }
     if (
       typeof window !== 'undefined' &&
       typeof window.alert === 'function' &&
