@@ -97,7 +97,7 @@ Convenciones: [ ] pendiente · [x] hecho
     12B) UI de biblioteca mejorada
     [x] Mostrar listado de charts con filtros avanzados.
     12C) Ordenar biblioteca por título
-    [ ] Permitir ordenar la lista de charts alfabéticamente.
+    [x] Permitir ordenar la lista de charts alfabéticamente.
 
 13. Importadores
     13A) CSV básico
@@ -123,7 +123,7 @@ Convenciones: [ ] pendiente · [x] hecho
     15C) Estrategia de caché avanzada
     [x] cache-first para estáticos y network-first para datos.
     15D) Limpieza de caché obsoleta
-    [ ] Eliminar versiones antiguas de caché al activar el Service Worker.
+    [x] Eliminar versiones antiguas de caché al activar el Service Worker.
 
 15B) Online / Sincronización y Nube
 Objetivo: offline-first con sync en la nube, compartir y backups.
@@ -163,7 +163,9 @@ Criterios de aceptación (15B)
     [x] Establecer lang="es".
 
 17. QA/E2E
-    [ ] Vitest (modelo/transpose/parsers); Playwright (MVP y flujos online); CI artefactos.
+    [x] Vitest (modelo/transpose/parsers); Playwright (MVP y flujos online); CI artefactos.
+    17B) Instalación automática de navegadores Playwright
+    [x] Descargar navegadores antes de ejecutar pruebas e2e.
 
 18. Estándares
     [ ] TS estricto, lógica pura en core, sin innerHTML, eventos delegados, Conventional Commits.

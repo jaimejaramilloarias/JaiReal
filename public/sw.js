@@ -8,6 +8,17 @@ self.addEventListener('install', (event) => {
     caches.open(STATIC_CACHE).then((cache) => cache.addAll(ASSETS)),
   );
 });
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((k) => k !== STATIC_CACHE && k !== DATA_CACHE)
+          .map((k) => caches.delete(k)),
+      ),
+    ),
+  );
+});
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;

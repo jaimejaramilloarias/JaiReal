@@ -73,20 +73,22 @@ export async function listCharts(
     req.onerror = () => reject(req.error);
   });
   db.close();
-  if (!filters) {
-    return items.map(({ id, title, tags }) => ({ id, title, tags }));
-  }
-  const title = filters.title?.toLowerCase();
-  const tag = filters.tag?.toLowerCase();
-  return items
-    .filter((it) => {
+  let filtered: LibraryItem[] = items;
+  if (filters) {
+    const title = filters.title?.toLowerCase();
+    const tag = filters.tag?.toLowerCase();
+    filtered = filtered.filter((it) => {
       const matchTitle = title ? it.title.toLowerCase().includes(title) : true;
       const matchTag = tag
         ? it.tags.some((t) => t.toLowerCase().includes(tag))
         : true;
       return matchTitle && matchTag;
-    })
-    .map(({ id, title, tags }) => ({ id, title, tags }));
+    });
+  }
+  filtered.sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }),
+  );
+  return filtered.map(({ id, title, tags }) => ({ id, title, tags }));
 }
 
 export async function deleteChart(id: string): Promise<void> {
