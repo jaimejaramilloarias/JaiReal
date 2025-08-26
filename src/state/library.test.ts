@@ -55,4 +55,11 @@ describe('library', () => {
     expect(filtered).toHaveLength(1);
     expect(filtered[0].title).toBe('Jazz Rock');
   });
+
+  it('lists charts sorted by title', async () => {
+    await saveChart(sampleChart('B Song'), 'B Song', []);
+    await saveChart(sampleChart('A Song'), 'A Song', []);
+    const charts = await listCharts();
+    expect(charts.map((c) => c.title)).toEqual(['A Song', 'B Song']);
+  });
 });

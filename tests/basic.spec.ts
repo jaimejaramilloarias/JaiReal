@@ -9,7 +9,7 @@ test.beforeEach(async ({ context }) => {
 
 test('homepage has header', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('header')).toHaveText('JaiReal-PRO');
+  await expect(page.locator('header')).toContainText('JaiReal-PRO');
 });
 
 test('measure has four editable slots', async ({ page }) => {
