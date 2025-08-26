@@ -155,4 +155,8 @@ Criterios de aceptación (15B)
     20C) Metrónomo durante reproducción
     [x] Implementar clic de metrónomo sincronizado con el tempo.
     20D) Toggle de metrónomo
-    [ ] Permitir activar o desactivar el sonido del metrónomo durante la reproducción.
+    [x] Permitir activar o desactivar el sonido del metrónomo durante la reproducción.
+    20E) Persistencia de preferencia de metrónomo
+    [x] Recordar si el metrónomo está activado entre sesiones.
+    20F) Control de volumen del metrónomo
+    [ ] Ajustar el volumen del clic del metrónomo.
