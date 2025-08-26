@@ -1,4 +1,8 @@
-import { listCharts as listLibraryCharts } from '../../state/library';
+import {
+  listCharts as listLibraryCharts,
+  markFavorite,
+  setStatus,
+} from '../../state/library';
 import { t } from '../../i18n';
 
 export function LibraryModal(
@@ -56,9 +60,32 @@ export function LibraryModal(
   const tagInput = document.createElement('input');
   tagLabel.append(tagText, tagInput);
 
+  const favLabel = document.createElement('label');
+  const favCheck = document.createElement('input');
+  favCheck.type = 'checkbox';
+  const favText = document.createTextNode('');
+  favLabel.append(favCheck, favText);
+
+  const statusLabel = document.createElement('label');
+  const statusText = document.createTextNode('');
+  const statusSelect = document.createElement('select');
+  const optActive = document.createElement('option');
+  optActive.value = 'active';
+  const optArchived = document.createElement('option');
+  optArchived.value = 'archived';
+  const optTrashed = document.createElement('option');
+  optTrashed.value = 'trashed';
+  statusSelect.append(optActive, optArchived, optTrashed);
+  statusLabel.append(statusText, statusSelect);
+
   const updateTexts = () => {
     titleText.textContent = t('title') + ':';
     tagText.textContent = t('tag') + ':';
+    favText.textContent = t('favoritesOnly');
+    statusText.textContent = t('statusFilter');
+    optActive.textContent = t('status_active');
+    optArchived.textContent = t('status_archived');
+    optTrashed.textContent = t('status_trashed');
   };
   updateTexts();
   document.addEventListener('langchange', updateTexts);
@@ -69,6 +96,8 @@ export function LibraryModal(
     const charts = await listLibraryCharts({
       title: titleInput.value || undefined,
       tag: tagInput.value || undefined,
+      favorite: favCheck.checked ? true : undefined,
+      status: statusSelect.value as 'active' | 'archived' | 'trashed',
     });
     while (list.firstChild) list.removeChild(list.firstChild);
     charts.forEach((c) => {
@@ -81,19 +110,94 @@ export function LibraryModal(
         close();
       };
       li.appendChild(btn);
+
+      const favBtn = document.createElement('button');
+      favBtn.type = 'button';
+      const updateFavBtn = () => {
+        favBtn.textContent = c.favorite ? '★' : '☆';
+        favBtn.title = c.favorite ? t('unfavorite') : t('favorite');
+      };
+      updateFavBtn();
+      favBtn.onclick = async (e) => {
+        e.stopPropagation();
+        await markFavorite(c.id, !c.favorite);
+        await refresh();
+      };
+      li.appendChild(favBtn);
+
+      if (c.status === 'active') {
+        const archBtn = document.createElement('button');
+        archBtn.type = 'button';
+        archBtn.textContent = t('archive');
+        archBtn.onclick = async (e) => {
+          e.stopPropagation();
+          await setStatus(c.id, 'archived');
+          await refresh();
+        };
+        li.appendChild(archBtn);
+        const trashBtn = document.createElement('button');
+        trashBtn.type = 'button';
+        trashBtn.textContent = t('trash');
+        trashBtn.onclick = async (e) => {
+          e.stopPropagation();
+          await setStatus(c.id, 'trashed');
+          await refresh();
+        };
+        li.appendChild(trashBtn);
+      } else if (c.status === 'archived') {
+        const restoreBtn = document.createElement('button');
+        restoreBtn.type = 'button';
+        restoreBtn.textContent = t('restore');
+        restoreBtn.onclick = async (e) => {
+          e.stopPropagation();
+          await setStatus(c.id, 'active');
+          await refresh();
+        };
+        li.appendChild(restoreBtn);
+        const trashBtn = document.createElement('button');
+        trashBtn.type = 'button';
+        trashBtn.textContent = t('trash');
+        trashBtn.onclick = async (e) => {
+          e.stopPropagation();
+          await setStatus(c.id, 'trashed');
+          await refresh();
+        };
+        li.appendChild(trashBtn);
+      } else if (c.status === 'trashed') {
+        const restoreBtn = document.createElement('button');
+        restoreBtn.type = 'button';
+        restoreBtn.textContent = t('restore');
+        restoreBtn.onclick = async (e) => {
+          e.stopPropagation();
+          await setStatus(c.id, 'active');
+          await refresh();
+        };
+        li.appendChild(restoreBtn);
+      }
+
       list.appendChild(li);
     });
   }
 
   titleInput.addEventListener('input', refresh);
   tagInput.addEventListener('input', refresh);
+  favCheck.addEventListener('change', refresh);
+  statusSelect.addEventListener('change', refresh);
   refresh();
 
   setTimeout(() => {
     titleInput.focus();
   });
 
-  content.append(titleEl, closeBtn, titleLabel, tagLabel, list);
+  content.append(
+    titleEl,
+    closeBtn,
+    titleLabel,
+    tagLabel,
+    favLabel,
+    statusLabel,
+    list,
+  );
   overlay.appendChild(content);
   return overlay;
 }
