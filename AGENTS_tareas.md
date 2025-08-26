@@ -56,13 +56,16 @@ Convenciones: [ ] pendiente · [x] hecho
    7F) Accesibilidad del mensaje (foco y ARIA)
    [x] Hecho.
    7G) Restaurar foco al elemento activador al cerrar el mensaje
-   [ ] Pendiente.
+   [x] Hecho.
 
 8. Voltas
    [ ] 1ª/2ª con rango; overlay y persistencia.
 
 9. Transposición
-   [ ] Semitonos + vistas Concierto/Bb/Eb/F; ♯/♭.
+   9A) Semitonos sobre toda la partitura
+   [x] Hecho.
+   9B) Vistas Concierto/Bb/Eb/F y preferencia ♯/♭
+   [ ] Pendiente.
 
 10. Plantillas
     [ ] AABA/Blues/Rhythm Changes/Intro-Tag-Out.

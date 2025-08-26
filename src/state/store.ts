@@ -4,6 +4,7 @@ import {
   type Measure,
   type Marker,
 } from '../core/model';
+import { transposeChord } from '../core/transpose';
 
 const STORAGE_KEY = 'jaireal.chart';
 const SHOW_SECONDARY_KEY = 'jaireal.showSecondary';
@@ -107,6 +108,20 @@ export class ChartStore {
     this.showSecondary = !this.showSecondary;
     this.persistShowSecondary();
     this.listeners.forEach((l) => l());
+  }
+
+  transpose(semitones: number, preferSharps = true) {
+    this.chart.sections.forEach((section) => {
+      section.measures.forEach((m) => {
+        m.beats.forEach((b) => {
+          b.chord = transposeChord(b.chord, semitones, preferSharps);
+          if (b.secondary) {
+            b.secondary = transposeChord(b.secondary, semitones, preferSharps);
+          }
+        });
+      });
+    });
+    this.setChart(this.chart);
   }
 
   toJSON() {

@@ -122,4 +122,32 @@ describe('ChartStore', () => {
     s.setMarker('D.S.');
     expect(msg).toBe('D.S. requiere un Segno.');
   });
+
+  it('transposes chords across the chart', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: 'C' },
+                { chord: 'F#', secondary: 'G' },
+                { chord: '', secondary: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    s.transpose(2);
+    const beats = s.chart.sections[0].measures[0].beats;
+    expect(beats[0].chord).toBe('D');
+    expect(beats[1].chord).toBe('G#');
+    expect(beats[1].secondary).toBe('A');
+  });
 });

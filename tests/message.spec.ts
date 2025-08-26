@@ -4,8 +4,10 @@ test('close marker validation message manually', async ({ page }) => {
   await page.goto('/');
   // Select first measure to enable marker selection
   await page.click('.measure');
-  // Choose an invalid marker (Fine requires D.C. or D.S.)
-  await page.selectOption('select', 'Fine');
+  const markerSelect = page.locator('select');
+  await markerSelect.focus();
+  // Choose an invalid marker (Fine requires D.C. o D.S.)
+  await markerSelect.selectOption('Fine');
   const message = page.locator('.message');
   await expect(message).toBeVisible();
   await expect(message).toContainText('Fine requiere D.C. o D.S.');
@@ -14,4 +16,5 @@ test('close marker validation message manually', async ({ page }) => {
   await expect(message).toHaveAttribute('aria-live', 'assertive');
   await page.click('.message-close');
   await expect(message).toBeHidden();
+  await expect(markerSelect).toBeFocused();
 });
