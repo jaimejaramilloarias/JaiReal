@@ -98,6 +98,31 @@ describe('playChart metronome', () => {
     expect(spy).toHaveBeenCalled();
     expect(spy.mock.calls[0][2]).toBe(0.3);
   });
+
+  it('adds count-in clicks', () => {
+    const chart: Chart = {
+      schemaVersion: 1,
+      title: '',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const spy = vi.spyOn(player.internal, 'scheduleClick');
+    player.playChart(chart, 120, true, 1, 1, 2);
+    expect(spy).toHaveBeenCalledTimes(6); // 4 beats + 2 count-in
+  });
 });
 
 describe('master volume', () => {

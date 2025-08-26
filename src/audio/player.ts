@@ -107,11 +107,16 @@ export function playChart(
   metronome = true,
   metronomeVolume = 1,
   chordVol = 1,
+  countIn = 0,
 ) {
   const ctx = getCtx();
   if (ctx.state === 'suspended') void ctx.resume();
   const beatDur = 60 / tempo;
   let time = 0;
+  for (let i = 0; i < countIn; i++) {
+    if (metronome) internal.scheduleClick(time, i === 0, metronomeVolume);
+    time += beatDur;
+  }
   chart.sections.forEach((section) => {
     section.measures.forEach((m) => {
       m.beats.forEach((b, i) => {
@@ -133,6 +138,7 @@ export function playSectionLoop(
   metronome = true,
   metronomeVolume = 1,
   chordVol = 1,
+  countIn = 0,
 ) {
   const section = chart.sections[sectionIndex];
   if (!section) return;
@@ -140,9 +146,9 @@ export function playSectionLoop(
     ...chart,
     sections: [section],
   };
-  playChart(subChart, tempo, metronome, metronomeVolume, chordVol);
+  playChart(subChart, tempo, metronome, metronomeVolume, chordVol, countIn);
   const beats = section.measures.reduce((sum, m) => sum + m.beats.length, 0);
-  const duration = (60 / tempo) * beats;
+  const duration = (60 / tempo) * (beats + countIn);
   loopTimeout = setTimeout(
     () =>
       playSectionLoop(
@@ -152,6 +158,7 @@ export function playSectionLoop(
         metronome,
         metronomeVolume,
         chordVol,
+        0,
       ),
     duration * 1000,
   );

@@ -103,7 +103,7 @@ Convenciones: [ ] pendiente · [x] hecho
     13C) iReal
         [x] Importación iReal simple con tests.
     13D) MusicXML
-        [ ] Pendiente.
+        [x] Importación MusicXML simple con tests.
 
 14. Preferencias/Vista
     [ ] Tema, fuentes/tamaños, ♯/♭.
@@ -203,3 +203,5 @@ Criterios de aceptación (15B)
   [x] Indicar en la UI los atajos de teclado para el volumen de los acordes.
   20W) Persistencia de volumen de acordes
   [x] Recordar el volumen de los acordes entre sesiones.
+  20X) Conteo previo a la reproducción
+  [x] Reproducir un conteo (count-in) antes de iniciar la reproducción.
