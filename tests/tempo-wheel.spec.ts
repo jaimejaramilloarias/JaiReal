@@ -8,15 +8,13 @@ test.beforeEach(async ({ context }) => {
   });
 });
 
-test('adjust tempo with keyboard shortcuts', async ({ page }) => {
+test('adjust tempo with mouse wheel', async ({ page }) => {
   await page.goto('/');
-  await page.click('body');
   const tempoLabel = page.locator('label:has-text("Tempo (Ctrl+←/→, rueda)")');
-  await expect(tempoLabel).toBeVisible();
   const tempoInput = tempoLabel.locator('input');
   await expect(tempoInput).toHaveValue('120');
-  await page.keyboard.press('Control+ArrowRight');
-  await expect(tempoInput).toHaveValue('125');
-  await page.keyboard.press('Control+ArrowLeft');
+  await tempoInput.dispatchEvent('wheel', { deltaY: -100 });
+  await expect(tempoInput).toHaveValue('121');
+  await tempoInput.dispatchEvent('wheel', { deltaY: 100 });
   await expect(tempoInput).toHaveValue('120');
 });

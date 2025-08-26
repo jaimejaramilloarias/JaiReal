@@ -108,8 +108,9 @@ export function Controls(): HTMLElement {
 
   const tempoLabel = document.createElement('label');
   const tempoShortcut = 'Ctrl+←/→';
-  tempoLabel.textContent = `Tempo (${tempoShortcut}): `;
-  tempoLabel.title = tempoShortcut;
+  const tempoWheelHint = 'rueda';
+  tempoLabel.textContent = `Tempo (${tempoShortcut}, ${tempoWheelHint}): `;
+  tempoLabel.title = `${tempoShortcut}, rueda del ratón`;
   const tempoInput = document.createElement('input');
   tempoInput.type = 'number';
   tempoInput.min = '40';
@@ -121,6 +122,13 @@ export function Controls(): HTMLElement {
       store.setTempo(val);
     }
   };
+  tempoInput.addEventListener('wheel', (ev) => {
+    ev.preventDefault();
+    const change = ev.deltaY < 0 ? 1 : -1;
+    const bpm = Math.min(240, Math.max(40, store.tempo + change));
+    store.setTempo(bpm);
+    tempoInput.value = String(bpm);
+  });
   tempoLabel.appendChild(tempoInput);
 
   const metronomeBtn = document.createElement('button');
