@@ -151,4 +151,6 @@ Criterios de aceptación (15B)
 20. Audio
     [x] Reproducción de acordes con Web Audio API.
     20B) Control de tempo y parada
-    [ ] Ajustar BPM y botón de detener reproducción.
+    [x] Ajustar BPM y botón de detener reproducción.
+    20C) Metrónomo durante reproducción
+    [ ] Implementar clic de metrónomo sincronizado con el tempo.
