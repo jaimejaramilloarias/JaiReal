@@ -104,6 +104,7 @@ window.addEventListener('keydown', (ev) => {
         store.metronome,
         store.metronomeVolume,
         store.chordVolume,
+        store.chordWave,
       );
     }
     ev.preventDefault();

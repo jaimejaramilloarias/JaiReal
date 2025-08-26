@@ -1,5 +1,7 @@
 import type { Chart } from '../core/model';
 
+type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth';
+
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let masterVolume = 1;
@@ -60,11 +62,12 @@ function scheduleChord(
   start: number,
   duration: number,
   volume: number,
+  wave: WaveType,
 ) {
   const ctx = getCtx();
   freqs.forEach((f) => {
     const osc = ctx.createOscillator();
-    osc.type = 'sine';
+    osc.type = wave;
     osc.frequency.value = f;
     const gain = ctx.createGain();
     osc.connect(gain);
@@ -107,6 +110,7 @@ export function playChart(
   metronome = true,
   metronomeVolume = 1,
   chordVol = 1,
+  chordWave: WaveType = 'sine',
   countIn = 0,
 ) {
   const ctx = getCtx();
@@ -123,7 +127,8 @@ export function playChart(
         if (metronome) internal.scheduleClick(time, i === 0, metronomeVolume);
         if (b.chord) {
           const freqs = parseChord(b.chord);
-          if (freqs.length) scheduleChord(freqs, time, beatDur, chordVol);
+          if (freqs.length)
+            scheduleChord(freqs, time, beatDur, chordVol, chordWave);
         }
         time += beatDur;
       });
@@ -138,6 +143,7 @@ export function playSectionLoop(
   metronome = true,
   metronomeVolume = 1,
   chordVol = 1,
+  chordWave: WaveType = 'sine',
   countIn = 0,
 ) {
   const section = chart.sections[sectionIndex];
@@ -146,7 +152,15 @@ export function playSectionLoop(
     ...chart,
     sections: [section],
   };
-  playChart(subChart, tempo, metronome, metronomeVolume, chordVol, countIn);
+  playChart(
+    subChart,
+    tempo,
+    metronome,
+    metronomeVolume,
+    chordVol,
+    chordWave,
+    countIn,
+  );
   const beats = section.measures.reduce((sum, m) => sum + m.beats.length, 0);
   const duration = (60 / tempo) * (beats + countIn);
   loopTimeout = setTimeout(
@@ -158,6 +172,7 @@ export function playSectionLoop(
         metronome,
         metronomeVolume,
         chordVol,
+        chordWave,
         0,
       ),
     duration * 1000,
