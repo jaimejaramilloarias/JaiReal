@@ -9,6 +9,7 @@ import { transposeChord } from '../core/transpose';
 const STORAGE_KEY = 'jaireal.chart';
 const SHOW_SECONDARY_KEY = 'jaireal.showSecondary';
 const VIEW_KEY = 'jaireal.view';
+const MANUAL_TRANSPOSE_KEY = 'jaireal.manualTranspose';
 
 type Instrument = 'C' | 'Bb' | 'Eb' | 'F';
 const instrumentSemitones: Record<Instrument, number> = {
@@ -50,6 +51,7 @@ export class ChartStore {
     const view = this.loadView();
     this.instrument = view.instrument;
     this.preferSharps = view.preferSharps;
+    this.manualTranspose = this.loadManualTranspose();
   }
 
   private loadChart(): Chart {
@@ -112,6 +114,25 @@ export class ChartStore {
     );
   }
 
+  private loadManualTranspose(): number {
+    try {
+      const raw = localStorage.getItem(MANUAL_TRANSPOSE_KEY);
+      if (raw) {
+        return JSON.parse(raw) as number;
+      }
+    } catch {
+      // ignore
+    }
+    return 0;
+  }
+
+  private persistManualTranspose() {
+    localStorage.setItem(
+      MANUAL_TRANSPOSE_KEY,
+      JSON.stringify(this.manualTranspose),
+    );
+  }
+
   subscribe(listener: Listener) {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -165,7 +186,10 @@ export class ChartStore {
         });
       });
     });
-    if (track) this.manualTranspose += semitones;
+    if (track) {
+      this.manualTranspose += semitones;
+      this.persistManualTranspose();
+    }
     this.setChart(this.chart);
   }
 
@@ -182,6 +206,7 @@ export class ChartStore {
     if (this.manualTranspose !== 0) {
       this.transpose(-this.manualTranspose, this.preferSharps, false);
       this.manualTranspose = 0;
+      this.persistManualTranspose();
       this.listeners.forEach((l) => l());
     }
   }

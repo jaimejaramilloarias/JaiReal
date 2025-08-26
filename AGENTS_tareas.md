@@ -74,8 +74,11 @@ Convenciones: [ ] pendiente · [x] hecho
 9E) Botón para resetear la transposición manual
 [x] Hecho.
 9F) Atajos de teclado para transposición manual
-[ ] Pendiente.
+[x] Hecho.
 9G) Persistir la transposición manual entre sesiones
+[x] Hecho.
+
+9H) Atajos de teclado para transposición por octava (±12)
 [ ] Pendiente.
 
 10. Plantillas

@@ -12,5 +12,15 @@ window.addEventListener('keydown', (ev) => {
   if (ev.ctrlKey && ev.shiftKey && ev.key.toLowerCase() === 'l') {
     store.toggleSecondary();
     ev.preventDefault();
+    return;
+  }
+  if (ev.ctrlKey && ev.key === 'ArrowUp') {
+    store.transpose(1);
+    ev.preventDefault();
+    return;
+  }
+  if (ev.ctrlKey && ev.key === 'ArrowDown') {
+    store.transpose(-1);
+    ev.preventDefault();
   }
 });
