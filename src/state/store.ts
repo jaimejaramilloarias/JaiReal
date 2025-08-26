@@ -12,6 +12,7 @@ const VIEW_KEY = 'jaireal.view';
 const MANUAL_TRANSPOSE_KEY = 'jaireal.manualTranspose';
 const TEMPO_KEY = 'jaireal.tempo';
 const METRONOME_KEY = 'jaireal.metronome';
+const METRONOME_VOLUME_KEY = 'jaireal.metronomeVolume';
 
 type Instrument = 'C' | 'Bb' | 'Eb' | 'F';
 const instrumentSemitones: Record<Instrument, number> = {
@@ -44,6 +45,7 @@ export class ChartStore {
   manualTranspose = 0;
   tempo: number;
   metronome: boolean;
+  metronomeVolume: number;
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
@@ -58,6 +60,7 @@ export class ChartStore {
     this.manualTranspose = this.loadManualTranspose();
     this.tempo = this.loadTempo();
     this.metronome = this.loadMetronome();
+    this.metronomeVolume = this.loadMetronomeVolume();
   }
 
   private loadChart(): Chart {
@@ -171,6 +174,25 @@ export class ChartStore {
     localStorage.setItem(METRONOME_KEY, JSON.stringify(this.metronome));
   }
 
+  private loadMetronomeVolume(): number {
+    try {
+      const raw = localStorage.getItem(METRONOME_VOLUME_KEY);
+      if (raw !== null) {
+        return JSON.parse(raw) as number;
+      }
+    } catch {
+      // ignore
+    }
+    return 1;
+  }
+
+  private persistMetronomeVolume() {
+    localStorage.setItem(
+      METRONOME_VOLUME_KEY,
+      JSON.stringify(this.metronomeVolume),
+    );
+  }
+
   subscribe(listener: Listener) {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -212,6 +234,12 @@ export class ChartStore {
   toggleMetronome() {
     this.metronome = !this.metronome;
     this.persistMetronome();
+    this.listeners.forEach((l) => l());
+  }
+
+  setMetronomeVolume(vol: number) {
+    this.metronomeVolume = vol;
+    this.persistMetronomeVolume();
     this.listeners.forEach((l) => l());
   }
 

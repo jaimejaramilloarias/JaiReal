@@ -132,10 +132,26 @@ export function Controls(): HTMLElement {
     store.toggleMetronome();
   };
 
+  const metronomeVolLabel = document.createElement('label');
+  metronomeVolLabel.textContent = 'Volumen metrónomo: ';
+  const metronomeVolInput = document.createElement('input');
+  metronomeVolInput.type = 'range';
+  metronomeVolInput.min = '0';
+  metronomeVolInput.max = '1';
+  metronomeVolInput.step = '0.01';
+  metronomeVolInput.value = String(store.metronomeVolume);
+  metronomeVolInput.oninput = () => {
+    const val = Number(metronomeVolInput.value);
+    if (!Number.isNaN(val)) {
+      store.setMetronomeVolume(val);
+    }
+  };
+  metronomeVolLabel.appendChild(metronomeVolInput);
+
   const playBtn = document.createElement('button');
   playBtn.textContent = 'Reproducir';
   playBtn.onclick = () => {
-    playChart(store.chart, store.tempo, store.metronome);
+    playChart(store.chart, store.tempo, store.metronome, store.metronomeVolume);
   };
 
   const stopBtn = document.createElement('button');
@@ -246,6 +262,7 @@ export function Controls(): HTMLElement {
     updateTransposeInfo();
     tempoInput.value = String(store.tempo);
     updateMetronomeText();
+    metronomeVolInput.value = String(store.metronomeVolume);
   });
   updateMarkerSelect();
 
@@ -259,6 +276,7 @@ export function Controls(): HTMLElement {
     transposeInfo,
     resetTransposeBtn,
     tempoLabel,
+    metronomeVolLabel,
     playBtn,
     stopBtn,
     metronomeBtn,

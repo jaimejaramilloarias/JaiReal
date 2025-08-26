@@ -68,7 +68,7 @@ function scheduleChord(freqs: number[], start: number, duration: number) {
 }
 
 export const internal = {
-  scheduleClick(start: number, accent: boolean) {
+  scheduleClick(start: number, accent: boolean, volume = 1) {
     const ctx = getCtx();
     const osc = ctx.createOscillator();
     osc.type = 'square';
@@ -79,14 +79,22 @@ export const internal = {
     const t = ctx.currentTime + start;
     const end = t + 0.05;
     gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(accent ? 0.7 : 0.5, t + 0.001);
+    gain.gain.exponentialRampToValueAtTime(
+      (accent ? 0.7 : 0.5) * volume,
+      t + 0.001,
+    );
     gain.gain.exponentialRampToValueAtTime(0.0001, end);
     osc.start(t);
     osc.stop(end);
   },
 };
 
-export function playChart(chart: Chart, tempo = 120, metronome = true) {
+export function playChart(
+  chart: Chart,
+  tempo = 120,
+  metronome = true,
+  metronomeVolume = 1,
+) {
   const ctx = getCtx();
   if (ctx.state === 'suspended') void ctx.resume();
   const beatDur = 60 / tempo;
@@ -94,7 +102,7 @@ export function playChart(chart: Chart, tempo = 120, metronome = true) {
   chart.sections.forEach((section) => {
     section.measures.forEach((m) => {
       m.beats.forEach((b, i) => {
-        if (metronome) internal.scheduleClick(time, i === 0);
+        if (metronome) internal.scheduleClick(time, i === 0, metronomeVolume);
         if (b.chord) {
           const freqs = parseChord(b.chord);
           if (freqs.length) scheduleChord(freqs, time, beatDur);
