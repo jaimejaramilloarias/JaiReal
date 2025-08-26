@@ -19,6 +19,24 @@ window.addEventListener('keydown', (ev) => {
     ev.preventDefault();
     return;
   }
+  if (ev.ctrlKey && ev.shiftKey && ev.key === 'ArrowUp') {
+    const vol = Math.min(
+      1,
+      Math.round((store.metronomeVolume + 0.1) * 100) / 100,
+    );
+    store.setMetronomeVolume(vol);
+    ev.preventDefault();
+    return;
+  }
+  if (ev.ctrlKey && ev.shiftKey && ev.key === 'ArrowDown') {
+    const vol = Math.max(
+      0,
+      Math.round((store.metronomeVolume - 0.1) * 100) / 100,
+    );
+    store.setMetronomeVolume(vol);
+    ev.preventDefault();
+    return;
+  }
   if (ev.ctrlKey && ev.shiftKey && ev.key.toLowerCase() === 'l') {
     store.toggleSecondary();
     ev.preventDefault();
