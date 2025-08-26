@@ -32,6 +32,11 @@ header {
   padding: 0.5rem 1rem;
 }
 
+.net-status {
+  margin-left: 1rem;
+  font-size: 0.9rem;
+}
+
 .rail {
   height: 20px;
   background: var(--rail-bg, #444);
