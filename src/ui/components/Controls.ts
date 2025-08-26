@@ -105,7 +105,7 @@ export function Controls(): HTMLElement {
       if (chart) {
         store.setChart(chart);
       }
-    });
+    }, openLibBtn);
     document.body.appendChild(modal);
   };
 

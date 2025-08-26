@@ -129,10 +129,10 @@ Convenciones: [ ] pendiente · [x] hecho
 Objetivo: offline-first con sync en la nube, compartir y backups.
 
 15B.1 Backend (elegir Supabase o Firebase)
-[ ] Proyecto creado, SDK, .env, reglas de seguridad.
+[x] Proyecto creado, SDK, .env, reglas de seguridad.
 
 15B.2 Modelo servidor
-[ ] users, charts, revisions, shares, collections, tags; índices.
+[x] users, charts, revisions, shares, collections, tags; índices.
 
 15B.3 Sincronización
 [ ] Outbox IndexedDB con clientMutationId; LWW; pull/push delta; reintentos; UI de estado; conflictos básicos.
@@ -158,7 +158,7 @@ Criterios de aceptación (15B)
 [ ] Conflictos detectados con opción “local” o “remoto”.
 
 16. Accesibilidad e i18n
-    [ ] Teclado, roles/aria, atajos; ES/EN.
+    [x] Teclado, roles/aria, atajos; ES/EN.
     16A) Idioma por defecto en index.html
     [x] Establecer lang="es".
     16B) Sistema básico de i18n con toggle ES/EN

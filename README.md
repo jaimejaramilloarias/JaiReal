@@ -15,6 +15,19 @@ voltas de 1ª y 2ª con rango.
 npm install
 ```
 
+## Configuración de Supabase
+
+Copia `.env.example` a `.env` y coloca las credenciales de tu proyecto
+Supabase:
+
+```bash
+cp .env.example .env
+# Edita .env con VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY
+```
+
+El archivo `supabase/schema.sql` contiene el modelo de tablas y políticas de
+seguridad recomendadas.
+
 ## Desarrollo
 
 ```bash

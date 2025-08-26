@@ -1,12 +1,26 @@
 import { listCharts as listLibraryCharts } from '../../state/library';
 import { t } from '../../i18n';
 
-export function LibraryModal(onSelect: (id: string) => void): HTMLElement {
+export function LibraryModal(
+  onSelect: (id: string) => void,
+  opener?: HTMLElement,
+): HTMLElement {
   const overlay = document.createElement('div');
   overlay.className = 'library-modal';
 
   const content = document.createElement('div');
   content.className = 'library-modal-content';
+  content.setAttribute('role', 'dialog');
+  content.setAttribute('aria-modal', 'true');
+
+  const titleEl = document.createElement('h2');
+  titleEl.id = 'library-modal-title';
+  const updateTitle = () => {
+    titleEl.textContent = t('library');
+  };
+  updateTitle();
+  document.addEventListener('langchange', updateTitle);
+  content.setAttribute('aria-labelledby', titleEl.id);
 
   const closeBtn = document.createElement('button');
   closeBtn.type = 'button';
@@ -14,8 +28,23 @@ export function LibraryModal(onSelect: (id: string) => void): HTMLElement {
     closeBtn.textContent = t('close');
   };
   updateCloseText();
-  closeBtn.onclick = () => overlay.remove();
   document.addEventListener('langchange', updateCloseText);
+
+  function close() {
+    overlay.remove();
+    opener?.focus();
+    overlay.removeEventListener('keydown', handleKey);
+  }
+
+  closeBtn.onclick = close;
+
+  function handleKey(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      close();
+    }
+  }
+  overlay.addEventListener('keydown', handleKey);
 
   const titleLabel = document.createElement('label');
   const titleText = document.createTextNode('');
@@ -49,7 +78,7 @@ export function LibraryModal(onSelect: (id: string) => void): HTMLElement {
       btn.textContent = `${c.title} [${c.tags.join(', ')}]`;
       btn.onclick = () => {
         onSelect(c.id);
-        overlay.remove();
+        close();
       };
       li.appendChild(btn);
       list.appendChild(li);
@@ -60,7 +89,11 @@ export function LibraryModal(onSelect: (id: string) => void): HTMLElement {
   tagInput.addEventListener('input', refresh);
   refresh();
 
-  content.append(closeBtn, titleLabel, tagLabel, list);
+  setTimeout(() => {
+    titleInput.focus();
+  });
+
+  content.append(titleEl, closeBtn, titleLabel, tagLabel, list);
   overlay.appendChild(content);
   return overlay;
 }
