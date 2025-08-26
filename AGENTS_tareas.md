@@ -96,7 +96,12 @@ Convenciones: [ ] pendiente · [x] hecho
     [ ] IndexedDB; etiquetas + búsqueda básica.
 
 13. Importadores
-    [ ] ChordPro/iReal/CSV; tests.
+    13A) CSV básico
+        [x] Importación CSV simple con tests.
+    13B) ChordPro
+        [ ] Pendiente.
+    13C) iReal
+        [ ] Pendiente.
 
 14. Preferencias/Vista
     [ ] Tema, fuentes/tamaños, ♯/♭.
