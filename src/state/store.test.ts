@@ -12,4 +12,17 @@ describe('ChartStore', () => {
     const raw = localStorage.getItem('jaireal.chart');
     expect(raw).toBeTruthy();
   });
+
+  it('stores secondary line per beat', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        { name: 'A', measures: [{ beats: [{ chord: 'C', secondary: 'b' }] }] },
+      ],
+    });
+    const s2 = new ChartStore();
+    expect(s2.chart.sections[0].measures[0].beats[0].secondary).toBe('b');
+  });
 });
