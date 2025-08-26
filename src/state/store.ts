@@ -78,6 +78,7 @@ export class ChartStore {
     this.chordWave = this.loadChordWave();
     this.theme = this.loadTheme();
     this.fontSize = this.loadFontSize();
+    this.setupSystemThemeListener();
   }
 
   private loadChart(): Chart {
@@ -265,11 +266,35 @@ export class ChartStore {
     } catch {
       // ignore
     }
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function'
+    ) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
     return 'light';
   }
 
   private persistTheme() {
     localStorage.setItem(THEME_KEY, this.theme);
+  }
+
+  private setupSystemThemeListener() {
+    if (
+      typeof window === 'undefined' ||
+      typeof window.matchMedia !== 'function'
+    )
+      return;
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    media.addEventListener('change', (e) => {
+      const stored = localStorage.getItem(THEME_KEY);
+      if (stored !== 'dark' && stored !== 'light') {
+        this.theme = e.matches ? 'dark' : 'light';
+        this.listeners.forEach((l) => l());
+      }
+    });
   }
 
   private loadFontSize(): number {

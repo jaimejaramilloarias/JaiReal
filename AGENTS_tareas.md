@@ -97,20 +97,22 @@ Convenciones: [ ] pendiente · [x] hecho
 
 13. Importadores
     13A) CSV básico
-        [x] Importación CSV simple con tests.
+    [x] Importación CSV simple con tests.
     13B) ChordPro
-        [x] Importación ChordPro simple con tests.
+    [x] Importación ChordPro simple con tests.
     13C) iReal
-        [x] Importación iReal simple con tests.
+    [x] Importación iReal simple con tests.
     13D) MusicXML
-        [x] Importación MusicXML simple con tests.
+    [x] Importación MusicXML simple con tests.
 
 14. Preferencias/Vista
     [x] Tema, fuentes/tamaños, ♯/♭.
     14B) Pruebas automáticas de preferencias
-        [x] Hecho.
+    [x] Hecho.
     14C) Detección automática de tema del sistema
-        [ ] Pendiente.
+    [x] Hecho.
+    14D) Pruebas de detección de tema del sistema
+    [x] Hecho.
 
 15. PWA / Offline
     [ ] Service Worker + manifest; app shell offline; onLine indicator.
@@ -149,6 +151,8 @@ Criterios de aceptación (15B)
 
 16. Accesibilidad e i18n
     [ ] Teclado, roles/aria, atajos; ES/EN.
+    16A) Idioma por defecto en index.html
+    [x] Establecer lang="es".
 
 17. QA/E2E
     [ ] Vitest (modelo/transpose/parsers); Playwright (MVP y flujos online); CI artefactos.
@@ -195,21 +199,21 @@ Criterios de aceptación (15B)
     [x] Permitir ajustar el volumen maestro con combinaciones de teclas.
     20Q) Mostrar atajo de volumen maestro en la interfaz
     [x] Indicar en la UI los atajos de teclado para el volumen maestro.
-  20R) Atajo para restablecer volumen maestro
-  [x] Permitir volver el volumen maestro a 100% con un atajo de teclado.
-  20S) Pruebas automáticas para reset de volumen maestro
-  [x] Hecho.
-  20T) Control de volumen de acordes
-  [x] Ajustar el volumen de los acordes de reproducción.
-  20U) Atajo de teclado para volumen de acordes
-  [x] Permitir ajustar el volumen de los acordes con combinaciones de teclas.
-  20V) Mostrar atajo de volumen de acordes en la interfaz
-  [x] Indicar en la UI los atajos de teclado para el volumen de los acordes.
-  20W) Persistencia de volumen de acordes
-  [x] Recordar el volumen de los acordes entre sesiones.
-  20X) Conteo previo a la reproducción
-  [x] Reproducir un conteo (count-in) antes de iniciar la reproducción.
-  20Y) Timbre de acordes seleccionable
-  [x] Permitir escoger la forma de onda (sine/square/triangle/sawtooth) para los acordes.
-  20Z) Persistencia de timbre de acordes
-  [x] Recordar la forma de onda seleccionada entre sesiones.
+    20R) Atajo para restablecer volumen maestro
+    [x] Permitir volver el volumen maestro a 100% con un atajo de teclado.
+    20S) Pruebas automáticas para reset de volumen maestro
+    [x] Hecho.
+    20T) Control de volumen de acordes
+    [x] Ajustar el volumen de los acordes de reproducción.
+    20U) Atajo de teclado para volumen de acordes
+    [x] Permitir ajustar el volumen de los acordes con combinaciones de teclas.
+    20V) Mostrar atajo de volumen de acordes en la interfaz
+    [x] Indicar en la UI los atajos de teclado para el volumen de los acordes.
+    20W) Persistencia de volumen de acordes
+    [x] Recordar el volumen de los acordes entre sesiones.
+    20X) Conteo previo a la reproducción
+    [x] Reproducir un conteo (count-in) antes de iniciar la reproducción.
+    20Y) Timbre de acordes seleccionable
+    [x] Permitir escoger la forma de onda (sine/square/triangle/sawtooth) para los acordes.
+    20Z) Persistencia de timbre de acordes
+    [x] Recordar la forma de onda seleccionada entre sesiones.
