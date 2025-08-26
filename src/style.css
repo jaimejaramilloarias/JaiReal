@@ -22,6 +22,8 @@ header {
 
 .section {
   margin-bottom: 1rem;
+  display: flex;
+  position: relative;
 }
 
 .section-title {
@@ -54,6 +56,22 @@ header {
   width: 100%;
   text-align: center;
   font-size: 0.75rem;
+}
+
+.volta-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+}
+
+.volta {
+  position: absolute;
+  top: -1.5rem;
+  border: 1px solid #000;
+  border-bottom: none;
+  font-size: 0.75rem;
+  padding: 0 0.25rem;
 }
 
 .slot {

@@ -1,6 +1,7 @@
 import { store } from '../../state/store';
 import type { Marker } from '../../core/model';
 import { playChart, stopPlayback } from '../../audio/player';
+import { getTemplate, type TemplateName } from '../../core/templates';
 
 export function Controls(): HTMLElement {
   const el = document.createElement('div');
@@ -60,6 +61,29 @@ export function Controls(): HTMLElement {
       store.fromJSON(text);
     }
   };
+
+  const templateLabel = document.createElement('label');
+  templateLabel.textContent = 'Plantilla: ';
+  const templateSelect = document.createElement('select');
+  const templateOptions: TemplateName[] = [
+    'AABA',
+    'Blues',
+    'Rhythm Changes',
+    'Intro-Tag-Out',
+  ];
+  templateOptions.forEach((t) => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    templateSelect.appendChild(opt);
+  });
+  const templateBtn = document.createElement('button');
+  templateBtn.textContent = 'Nueva desde plantilla';
+  templateBtn.onclick = () => {
+    const name = templateSelect.value as TemplateName;
+    store.setChart(getTemplate(name));
+  };
+  templateLabel.appendChild(templateSelect);
 
   const toggleSecondaryBtn = document.createElement('button');
   const shortcut = 'Ctrl+Shift+L';
@@ -222,6 +246,43 @@ export function Controls(): HTMLElement {
     );
   };
 
+  const voltaLabel = document.createElement('label');
+  voltaLabel.textContent = 'Volta: ';
+  const voltaSelect = document.createElement('select');
+  ['', '1', '2'].forEach((v) => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = v ? `${v}ª` : '(sin)';
+    voltaSelect.appendChild(opt);
+  });
+  const voltaFrom = document.createElement('input');
+  voltaFrom.type = 'number';
+  voltaFrom.min = '1';
+  voltaFrom.placeholder = 'desde';
+  const voltaTo = document.createElement('input');
+  voltaTo.type = 'number';
+  voltaTo.min = '1';
+  voltaTo.placeholder = 'hasta';
+  const voltaBtn = document.createElement('button');
+  voltaBtn.textContent = 'Aplicar';
+  voltaBtn.onclick = () => {
+    if (store.selectedSection === null) return;
+    const num = Number(voltaSelect.value);
+    const from = Number(voltaFrom.value) - 1;
+    const to = Number(voltaTo.value) - 1;
+    if (num && !Number.isNaN(from) && !Number.isNaN(to)) {
+      store.setVolta(store.selectedSection, num as 1 | 2, from, to);
+    }
+  };
+  const clearVoltaBtn = document.createElement('button');
+  clearVoltaBtn.textContent = 'Borrar voltas';
+  clearVoltaBtn.onclick = () => {
+    if (store.selectedSection === null) return;
+    store.clearVolta(store.selectedSection, 1);
+    store.clearVolta(store.selectedSection, 2);
+  };
+  voltaLabel.append(voltaSelect, voltaFrom, voltaTo, voltaBtn);
+
   const markerLabel = document.createElement('label');
   markerLabel.textContent = 'Marcador: ';
   const markerSelect = document.createElement('select');
@@ -285,6 +346,8 @@ export function Controls(): HTMLElement {
   el.append(
     saveBtn,
     loadInput,
+    templateLabel,
+    templateBtn,
     toggleSecondaryBtn,
     transposeUpBtn,
     transposeDownBtn,
@@ -299,6 +362,8 @@ export function Controls(): HTMLElement {
     instrumentSelect,
     accidentalLabel,
     accidentalSelect,
+    voltaLabel,
+    clearVoltaBtn,
     markerLabel,
     messageEl,
   );

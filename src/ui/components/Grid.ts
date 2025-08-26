@@ -20,6 +20,8 @@ export function Grid(): HTMLElement {
       title.textContent = section.name;
       sectionEl.appendChild(title);
 
+      const measureEls: HTMLElement[] = [];
+
       section.measures.forEach((measure, mIdx) => {
         const measureEl = document.createElement('div');
         measureEl.className = 'measure';
@@ -178,10 +180,34 @@ export function Grid(): HTMLElement {
           measureEl.appendChild(slot);
         }
 
+        measureEls.push(measureEl);
         sectionEl.appendChild(measureEl);
       });
 
+      const voltaContainer = document.createElement('div');
+      voltaContainer.className = 'volta-container';
+      sectionEl.appendChild(voltaContainer);
+
       el.appendChild(sectionEl);
+
+      requestAnimationFrame(() => {
+        voltaContainer.innerHTML = '';
+        section.measures.forEach((measure, mIdx) => {
+          if (measure.volta && measure.volta.from === mIdx) {
+            const startEl = measureEls[mIdx];
+            const endEl = measureEls[measure.volta.to];
+            if (!startEl || !endEl) return;
+            const voltaEl = document.createElement('div');
+            voltaEl.className = 'volta';
+            voltaEl.textContent = `${measure.volta.number}ª`;
+            const left = startEl.offsetLeft;
+            const width = endEl.offsetLeft + endEl.offsetWidth - left;
+            voltaEl.style.left = `${left}px`;
+            voltaEl.style.width = `${width}px`;
+            voltaContainer.appendChild(voltaEl);
+          }
+        });
+      });
     });
   };
 

@@ -250,4 +250,28 @@ describe('ChartStore', () => {
     const s2 = new ChartStore();
     expect(s2.manualTranspose).toBe(2);
   });
+
+  it('sets and clears voltas', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        {
+          name: 'A',
+          measures: Array.from({ length: 4 }, () => ({
+            beats: [{ chord: '' }, { chord: '' }, { chord: '' }, { chord: '' }],
+          })),
+        },
+      ],
+    });
+    s.setVolta(0, 1, 0, 1);
+    expect(s.chart.sections[0].measures[0].volta).toEqual({
+      number: 1,
+      from: 0,
+      to: 1,
+    });
+    s.clearVolta(0, 1);
+    expect(s.chart.sections[0].measures[0].volta).toBeUndefined();
+  });
 });

@@ -2,6 +2,8 @@
 
 Editor de cifrados orientado a trabajo offline.
 Incluye reproducción básica de acordes con la Web Audio API.
+Soporta plantillas AABA, Blues, Rhythm Changes e Intro-Tag-Out, además de
+voltas de 1ª y 2ª con rango.
 
 ## Requisitos
 
