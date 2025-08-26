@@ -1,7 +1,8 @@
 import { store } from '../../state/store';
-import type { BeatSlot } from '../../core/model';
+import type { BeatSlot, Measure } from '../../core/model';
 
-let clipboard: BeatSlot | null = null;
+let beatClipboard: BeatSlot | null = null;
+let measureClipboard: Measure | null = null;
 
 export function Grid(): HTMLElement {
   const el = document.createElement('div');
@@ -47,20 +48,78 @@ export function Grid(): HTMLElement {
             store.setChart(store.chart);
           };
 
-          const handleKey = (ev: KeyboardEvent) => {
+          const handleKey = async (ev: KeyboardEvent) => {
+            // Beat copy/paste
             if (ev.ctrlKey && ev.shiftKey && ev.key === 'c') {
-              clipboard = { chord: beat.chord, secondary: beat.secondary };
-              ev.preventDefault();
-            }
-            if (ev.ctrlKey && ev.shiftKey && ev.key === 'v') {
-              if (clipboard) {
-                beat.chord = clipboard.chord;
-                beat.secondary = clipboard.secondary;
-                chordEl.textContent = beat.chord;
-                secondaryEl.textContent = beat.secondary || '';
-                store.setChart(store.chart);
+              const data = { chord: beat.chord, secondary: beat.secondary };
+              beatClipboard = { ...data };
+              try {
+                await navigator.clipboard.writeText(JSON.stringify(data));
+              } catch {
+                // ignore clipboard errors
               }
               ev.preventDefault();
+              return;
+            }
+            if (ev.ctrlKey && ev.shiftKey && ev.key === 'v') {
+              ev.preventDefault();
+              let text = '';
+              try {
+                text = await navigator.clipboard.readText();
+              } catch {
+                // ignore
+              }
+              try {
+                const data = JSON.parse(text) as BeatSlot;
+                beat.chord = data.chord || '';
+                beat.secondary = data.secondary;
+                beatClipboard = { ...data };
+              } catch {
+                if (beatClipboard) {
+                  beat.chord = beatClipboard.chord;
+                  beat.secondary = beatClipboard.secondary;
+                }
+              }
+              chordEl.textContent = beat.chord;
+              secondaryEl.textContent = beat.secondary || '';
+              store.setChart(store.chart);
+              return;
+            }
+
+            // Measure copy/paste
+            if (ev.ctrlKey && ev.altKey && ev.key === 'c') {
+              const data = { beats: measure.beats.map((b) => ({ ...b })) };
+              measureClipboard = JSON.parse(JSON.stringify(data));
+              try {
+                await navigator.clipboard.writeText(JSON.stringify(data));
+              } catch {
+                // ignore
+              }
+              ev.preventDefault();
+              return;
+            }
+            if (ev.ctrlKey && ev.altKey && ev.key === 'v') {
+              ev.preventDefault();
+              let text = '';
+              try {
+                text = await navigator.clipboard.readText();
+              } catch {
+                // ignore
+              }
+              let data: Measure | null = null;
+              try {
+                data = JSON.parse(text) as Measure;
+              } catch {
+                data = measureClipboard;
+              }
+              if (data && Array.isArray(data.beats)) {
+                measure.beats = data.beats.map((b) => ({
+                  chord: b.chord || '',
+                  secondary: b.secondary,
+                }));
+                measureClipboard = JSON.parse(JSON.stringify(data));
+                store.setChart(store.chart);
+              }
             }
           };
 
