@@ -189,7 +189,15 @@ Criterios de aceptación (15B)
     [x] Permitir ajustar el volumen maestro con combinaciones de teclas.
     20Q) Mostrar atajo de volumen maestro en la interfaz
     [x] Indicar en la UI los atajos de teclado para el volumen maestro.
-    20R) Atajo para restablecer volumen maestro
-    [x] Permitir volver el volumen maestro a 100% con un atajo de teclado.
-    20S) Pruebas automáticas para reset de volumen maestro
-    [x] Hecho.
+  20R) Atajo para restablecer volumen maestro
+  [x] Permitir volver el volumen maestro a 100% con un atajo de teclado.
+  20S) Pruebas automáticas para reset de volumen maestro
+  [x] Hecho.
+  20T) Control de volumen de acordes
+  [x] Ajustar el volumen de los acordes de reproducción.
+  20U) Atajo de teclado para volumen de acordes
+  [x] Permitir ajustar el volumen de los acordes con combinaciones de teclas.
+  20V) Mostrar atajo de volumen de acordes en la interfaz
+  [x] Indicar en la UI los atajos de teclado para el volumen de los acordes.
+  20W) Persistencia de volumen de acordes
+  [x] Recordar el volumen de los acordes entre sesiones.

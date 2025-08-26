@@ -62,6 +62,15 @@ describe('ChartStore', () => {
     expect(s2.masterVolume).toBe(0.5);
   });
 
+  it('sets and persists chord volume', () => {
+    const s = new ChartStore();
+    expect(s.chordVolume).toBe(1);
+    s.setChordVolume(0.5);
+    expect(s.chordVolume).toBe(0.5);
+    const s2 = new ChartStore();
+    expect(s2.chordVolume).toBe(0.5);
+  });
+
   it('selects measures and applies markers', () => {
     const s = new ChartStore();
     s.setChart({

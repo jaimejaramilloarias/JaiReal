@@ -185,6 +185,24 @@ export function Controls(): HTMLElement {
   };
   masterVolLabel.appendChild(masterVolInput);
 
+  const chordVolLabel = document.createElement('label');
+  const chordVolShortcut = 'Ctrl+Alt+Shift+↑/↓';
+  chordVolLabel.textContent = `Volumen acordes (${chordVolShortcut}): `;
+  chordVolLabel.title = chordVolShortcut;
+  const chordVolInput = document.createElement('input');
+  chordVolInput.type = 'range';
+  chordVolInput.min = '0';
+  chordVolInput.max = '1';
+  chordVolInput.step = '0.01';
+  chordVolInput.value = String(store.chordVolume);
+  chordVolInput.oninput = () => {
+    const val = Number(chordVolInput.value);
+    if (!Number.isNaN(val)) {
+      store.setChordVolume(val);
+    }
+  };
+  chordVolLabel.appendChild(chordVolInput);
+
   const metronomeBtn = document.createElement('button');
   const updateMetronomeText = () => {
     metronomeBtn.textContent = store.metronome
@@ -220,7 +238,13 @@ export function Controls(): HTMLElement {
   playBtn.title = playShortcut;
   playBtn.onclick = () => {
     setMasterVolume(store.masterVolume);
-    playChart(store.chart, store.tempo, store.metronome, store.metronomeVolume);
+    playChart(
+      store.chart,
+      store.tempo,
+      store.metronome,
+      store.metronomeVolume,
+      store.chordVolume,
+    );
   };
 
   const stopBtn = document.createElement('button');
@@ -241,6 +265,7 @@ export function Controls(): HTMLElement {
         store.tempo,
         store.metronome,
         store.metronomeVolume,
+        store.chordVolume,
       );
     }
   };
@@ -386,6 +411,7 @@ export function Controls(): HTMLElement {
     updateMetronomeText();
     metronomeVolInput.value = String(store.metronomeVolume);
     masterVolInput.value = String(store.masterVolume);
+    chordVolInput.value = String(store.chordVolume);
   });
   updateMarkerSelect();
 
@@ -403,6 +429,7 @@ export function Controls(): HTMLElement {
     resetTransposeBtn,
     tempoLabel,
     masterVolLabel,
+    chordVolLabel,
     metronomeVolLabel,
     playBtn,
     stopBtn,
