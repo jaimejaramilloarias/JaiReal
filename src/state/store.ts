@@ -1,6 +1,19 @@
-import { Chart, emptyChart } from '../core/model';
+import { Chart, schemaVersion } from '../core/model';
 
 const STORAGE_KEY = 'jaireal.chart';
+
+const demoChart = (): Chart => ({
+  schemaVersion,
+  title: 'Untitled',
+  sections: [
+    {
+      name: 'A',
+      measures: [
+        { beats: [{ chord: '' }, { chord: '' }, { chord: '' }, { chord: '' }] },
+      ],
+    },
+  ],
+});
 
 type Listener = () => void;
 
@@ -21,7 +34,7 @@ export class ChartStore {
     } catch {
       // ignore
     }
-    return emptyChart();
+    return demoChart();
   }
 
   private persist() {

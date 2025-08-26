@@ -29,14 +29,38 @@ header {
   margin-bottom: 0.5rem;
 }
 
+
 .measure {
   border: 1px solid #888;
-  width: 4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 8rem;
   height: 4rem;
-  display: inline-block;
   margin-right: 0.25rem;
+}
+
+.slot {
+  border-right: 1px solid #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slot:last-child {
+  border-right: none;
 }
 
 .controls {
   margin: 1rem;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    padding: 0.5rem;
+  }
+
+  .measure {
+    width: 100%;
+    height: 3rem;
+  }
 }
