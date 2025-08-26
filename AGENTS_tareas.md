@@ -26,6 +26,8 @@ Convenciones: [ ] pendiente · [x] hecho
    [x] Slots 1–4 contenteditable.
    [x] Atajos; copiar/pegar.
    5B) Copiar/pegar compases completos y portapapeles del sistema
+   [x] Hecho.
+   5C) Arrastrar para reordenar compases
    [ ] Pendiente.
 
 6. Renglón secundario
