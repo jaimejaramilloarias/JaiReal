@@ -50,6 +50,8 @@ Convenciones: [ ] pendiente · [x] hecho
    7C) Mensajes de error de validación en la UI
    [x] Hecho.
    7D) Botón para cerrar mensajes de error manualmente
+   [x] Hecho.
+   7E) Pruebas automáticas para el botón de cierre
    [ ] Pendiente.
 
 8. Voltas
