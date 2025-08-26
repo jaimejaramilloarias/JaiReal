@@ -14,6 +14,7 @@ const TEMPO_KEY = 'jaireal.tempo';
 const METRONOME_KEY = 'jaireal.metronome';
 const METRONOME_VOLUME_KEY = 'jaireal.metronomeVolume';
 const MASTER_VOLUME_KEY = 'jaireal.masterVolume';
+const CHORD_VOLUME_KEY = 'jaireal.chordVolume';
 
 type Instrument = 'C' | 'Bb' | 'Eb' | 'F';
 const instrumentSemitones: Record<Instrument, number> = {
@@ -48,6 +49,7 @@ export class ChartStore {
   metronome: boolean;
   metronomeVolume: number;
   masterVolume: number;
+  chordVolume: number;
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
@@ -64,6 +66,7 @@ export class ChartStore {
     this.metronome = this.loadMetronome();
     this.metronomeVolume = this.loadMetronomeVolume();
     this.masterVolume = this.loadMasterVolume();
+    this.chordVolume = this.loadChordVolume();
   }
 
   private loadChart(): Chart {
@@ -205,6 +208,22 @@ export class ChartStore {
     localStorage.setItem(MASTER_VOLUME_KEY, JSON.stringify(this.masterVolume));
   }
 
+  private loadChordVolume(): number {
+    try {
+      const raw = localStorage.getItem(CHORD_VOLUME_KEY);
+      if (raw !== null) {
+        return JSON.parse(raw) as number;
+      }
+    } catch {
+      // ignore
+    }
+    return 1;
+  }
+
+  private persistChordVolume() {
+    localStorage.setItem(CHORD_VOLUME_KEY, JSON.stringify(this.chordVolume));
+  }
+
   private persistMetronomeVolume() {
     localStorage.setItem(
       METRONOME_VOLUME_KEY,
@@ -265,6 +284,12 @@ export class ChartStore {
   setMasterVolume(vol: number) {
     this.masterVolume = vol;
     this.persistMasterVolume();
+    this.listeners.forEach((l) => l());
+  }
+
+  setChordVolume(vol: number) {
+    this.chordVolume = vol;
+    this.persistChordVolume();
     this.listeners.forEach((l) => l());
   }
 

@@ -10,6 +10,18 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 app.append(Header(), Rail(), Grid(), Controls());
 
 window.addEventListener('keydown', (ev) => {
+  if (ev.ctrlKey && ev.altKey && ev.shiftKey && ev.key === 'ArrowUp') {
+    const vol = Math.min(1, Math.round((store.chordVolume + 0.1) * 100) / 100);
+    store.setChordVolume(vol);
+    ev.preventDefault();
+    return;
+  }
+  if (ev.ctrlKey && ev.altKey && ev.shiftKey && ev.key === 'ArrowDown') {
+    const vol = Math.max(0, Math.round((store.chordVolume - 0.1) * 100) / 100);
+    store.setChordVolume(vol);
+    ev.preventDefault();
+    return;
+  }
   if (ev.ctrlKey && ev.altKey && ev.key === 'ArrowUp') {
     store.transpose(12);
     ev.preventDefault();
@@ -91,6 +103,7 @@ window.addEventListener('keydown', (ev) => {
         store.tempo,
         store.metronome,
         store.metronomeVolume,
+        store.chordVolume,
       );
     }
     ev.preventDefault();

@@ -55,7 +55,12 @@ function parseChord(chord: string): number[] {
   return intervals.map((i) => base * 2 ** (i / 12));
 }
 
-function scheduleChord(freqs: number[], start: number, duration: number) {
+function scheduleChord(
+  freqs: number[],
+  start: number,
+  duration: number,
+  volume: number,
+) {
   const ctx = getCtx();
   freqs.forEach((f) => {
     const osc = ctx.createOscillator();
@@ -67,7 +72,7 @@ function scheduleChord(freqs: number[], start: number, duration: number) {
     const t = ctx.currentTime + start;
     const end = t + duration;
     gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.5, t + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.5 * volume, t + 0.05);
     gain.gain.exponentialRampToValueAtTime(0.0001, end);
     osc.start(t);
     osc.stop(end);
@@ -101,6 +106,7 @@ export function playChart(
   tempo = 120,
   metronome = true,
   metronomeVolume = 1,
+  chordVol = 1,
 ) {
   const ctx = getCtx();
   if (ctx.state === 'suspended') void ctx.resume();
@@ -112,7 +118,7 @@ export function playChart(
         if (metronome) internal.scheduleClick(time, i === 0, metronomeVolume);
         if (b.chord) {
           const freqs = parseChord(b.chord);
-          if (freqs.length) scheduleChord(freqs, time, beatDur);
+          if (freqs.length) scheduleChord(freqs, time, beatDur, chordVol);
         }
         time += beatDur;
       });
@@ -126,6 +132,7 @@ export function playSectionLoop(
   tempo = 120,
   metronome = true,
   metronomeVolume = 1,
+  chordVol = 1,
 ) {
   const section = chart.sections[sectionIndex];
   if (!section) return;
@@ -133,12 +140,19 @@ export function playSectionLoop(
     ...chart,
     sections: [section],
   };
-  playChart(subChart, tempo, metronome, metronomeVolume);
+  playChart(subChart, tempo, metronome, metronomeVolume, chordVol);
   const beats = section.measures.reduce((sum, m) => sum + m.beats.length, 0);
   const duration = (60 / tempo) * beats;
   loopTimeout = setTimeout(
     () =>
-      playSectionLoop(chart, sectionIndex, tempo, metronome, metronomeVolume),
+      playSectionLoop(
+        chart,
+        sectionIndex,
+        tempo,
+        metronome,
+        metronomeVolume,
+        chordVol,
+      ),
     duration * 1000,
   );
 }
