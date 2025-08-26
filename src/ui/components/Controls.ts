@@ -133,7 +133,9 @@ export function Controls(): HTMLElement {
   };
 
   const metronomeVolLabel = document.createElement('label');
-  metronomeVolLabel.textContent = 'Volumen metrónomo: ';
+  const metronomeVolShortcut = 'Ctrl+Shift+↑/↓';
+  metronomeVolLabel.textContent = `Volumen metrónomo (${metronomeVolShortcut}): `;
+  metronomeVolLabel.title = metronomeVolShortcut;
   const metronomeVolInput = document.createElement('input');
   metronomeVolInput.type = 'range';
   metronomeVolInput.min = '0';

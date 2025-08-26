@@ -11,7 +11,11 @@ test.beforeEach(async ({ context }) => {
 test('adjust metronome volume with keyboard shortcuts', async ({ page }) => {
   await page.goto('/');
   await page.click('body');
-  const volInput = page.locator('label:has-text("Volumen metrónomo") input');
+  const volLabel = page.locator(
+    'label:has-text("Volumen metrónomo (Ctrl+Shift+↑/↓)")',
+  );
+  await expect(volLabel).toBeVisible();
+  const volInput = volLabel.locator('input');
   await expect(volInput).toHaveValue('0.5');
   await page.keyboard.press('Control+Shift+ArrowUp');
   await expect(volInput).toHaveValue('0.6');
