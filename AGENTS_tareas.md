@@ -52,6 +52,8 @@ Convenciones: [ ] pendiente · [x] hecho
    7D) Botón para cerrar mensajes de error manualmente
    [x] Hecho.
    7E) Pruebas automáticas para el botón de cierre
+   [x] Hecho.
+   7F) Accesibilidad del mensaje (foco y ARIA)
    [ ] Pendiente.
 
 8. Voltas
