@@ -161,4 +161,6 @@ Criterios de aceptación (15B)
     20F) Control de volumen del metrónomo
     [x] Ajustar el volumen del clic del metrónomo.
     20G) Atajo de teclado para volumen del metrónomo
-    [ ] Permitir ajustar el volumen con el teclado.
+    [x] Permitir ajustar el volumen con el teclado.
+    20H) Mostrar atajo de volumen en la interfaz
+    [ ] Indicar en la UI los atajos de teclado para el volumen del metrónomo.
