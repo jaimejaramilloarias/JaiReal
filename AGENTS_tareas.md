@@ -161,6 +161,10 @@ Criterios de aceptación (15B)
     [ ] Teclado, roles/aria, atajos; ES/EN.
     16A) Idioma por defecto en index.html
     [x] Establecer lang="es".
+    16B) Sistema básico de i18n con toggle ES/EN
+    [x] Hecho.
+    16C) Traducir textos restantes de la interfaz
+    [ ] Pendiente.
 
 17. QA/E2E
     [x] Vitest (modelo/transpose/parsers); Playwright (MVP y flujos online); CI artefactos.

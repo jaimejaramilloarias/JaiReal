@@ -13,6 +13,7 @@ import {
   getChart as getLibraryChart,
 } from '../../state/library';
 import { LibraryModal } from './LibraryModal';
+import { t } from '../../i18n';
 
 type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth';
 
@@ -29,7 +30,11 @@ export function Controls(): HTMLElement {
   closeBtn.className = 'message-close';
   closeBtn.type = 'button';
   closeBtn.textContent = '×';
-  closeBtn.setAttribute('aria-label', 'Cerrar mensaje');
+  const updateCloseAria = () => {
+    closeBtn.setAttribute('aria-label', t('closeMessage'));
+  };
+  updateCloseAria();
+  document.addEventListener('langchange', updateCloseAria);
   messageEl.append(messageText, closeBtn);
 
   let hideTimeout: number | undefined;
@@ -52,7 +57,6 @@ export function Controls(): HTMLElement {
   closeBtn.onclick = hideMessage;
 
   const saveBtn = document.createElement('button');
-  saveBtn.textContent = 'Guardar JSON';
   saveBtn.onclick = () => {
     const json = store.toJSON();
     const blob = new Blob([json], { type: 'application/json' });
@@ -76,13 +80,11 @@ export function Controls(): HTMLElement {
   };
 
   const pdfBtn = document.createElement('button');
-  pdfBtn.textContent = 'Exportar PDF';
   pdfBtn.onclick = () => {
     exportChartPDF(store.chart);
   };
 
   const saveLibBtn = document.createElement('button');
-  saveLibBtn.textContent = 'Guardar en biblioteca';
   saveLibBtn.onclick = async () => {
     const title = prompt('Título', store.chart.title);
     if (!title) return;
@@ -97,7 +99,6 @@ export function Controls(): HTMLElement {
   };
 
   const openLibBtn = document.createElement('button');
-  openLibBtn.textContent = 'Abrir de biblioteca';
   openLibBtn.onclick = () => {
     const modal = LibraryModal(async (id) => {
       const chart = await getLibraryChart(id);
@@ -109,7 +110,6 @@ export function Controls(): HTMLElement {
   };
 
   const templateLabel = document.createElement('label');
-  templateLabel.textContent = 'Plantilla: ';
   const templateSelect = document.createElement('select');
   const templateOptions: TemplateName[] = [
     'AABA',
@@ -124,7 +124,6 @@ export function Controls(): HTMLElement {
     templateSelect.appendChild(opt);
   });
   const templateBtn = document.createElement('button');
-  templateBtn.textContent = 'Nueva desde plantilla';
   templateBtn.onclick = () => {
     const name = templateSelect.value as TemplateName;
     store.setChart(getTemplate(name));
@@ -134,12 +133,10 @@ export function Controls(): HTMLElement {
   const toggleSecondaryBtn = document.createElement('button');
   const shortcut = 'Ctrl+Shift+L';
   const updateToggleText = () => {
-    toggleSecondaryBtn.textContent = store.showSecondary
-      ? `Ocultar renglón secundario (${shortcut})`
-      : `Mostrar renglón secundario (${shortcut})`;
+    const key = store.showSecondary ? 'hideSecondary' : 'showSecondary';
+    toggleSecondaryBtn.textContent = t(key, { shortcut });
     toggleSecondaryBtn.title = shortcut;
   };
-  updateToggleText();
   toggleSecondaryBtn.onclick = () => {
     store.toggleSecondary();
   };
@@ -147,7 +144,6 @@ export function Controls(): HTMLElement {
   const transposeUpBtn = document.createElement('button');
   const transposeUpShortcut = 'Ctrl+↑';
   const transposeOctUpShortcut = 'Ctrl+Alt+↑';
-  transposeUpBtn.textContent = `Transponer +1 (${transposeUpShortcut}) / +12 (${transposeOctUpShortcut})`;
   transposeUpBtn.title = `${transposeUpShortcut} (+1), ${transposeOctUpShortcut} (+12)`;
   transposeUpBtn.onclick = () => {
     store.transpose(1);
@@ -156,31 +152,59 @@ export function Controls(): HTMLElement {
   const transposeDownBtn = document.createElement('button');
   const transposeDownShortcut = 'Ctrl+↓';
   const transposeOctDownShortcut = 'Ctrl+Alt+↓';
-  transposeDownBtn.textContent = `Transponer -1 (${transposeDownShortcut}) / -12 (${transposeOctDownShortcut})`;
   transposeDownBtn.title = `${transposeDownShortcut} (-1), ${transposeOctDownShortcut} (-12)`;
   transposeDownBtn.onclick = () => {
     store.transpose(-1);
   };
 
+  const resetTransposeBtn = document.createElement('button');
+
   const transposeInfo = document.createElement('span');
   const updateTransposeInfo = () => {
     const val = store.manualTranspose;
     const sign = val > 0 ? '+' : '';
-    transposeInfo.textContent = `Transposición: ${sign}${val}`;
+    transposeInfo.textContent = `${t('transposeLabel')} ${sign}${val}`;
   };
   updateTransposeInfo();
 
-  const resetTransposeBtn = document.createElement('button');
-  resetTransposeBtn.textContent = 'Reset Transposición';
+  const updateLangTexts = () => {
+    saveBtn.textContent = t('saveJson');
+    pdfBtn.textContent = t('exportPdf');
+    saveLibBtn.textContent = t('saveLibrary');
+    openLibBtn.textContent = t('openLibrary');
+    templateLabel.textContent = t('templateLabel') + ' ';
+    templateBtn.textContent = t('newFromTemplate');
+    transposeUpBtn.textContent = t('transposeUp', {
+      s1: transposeUpShortcut,
+      s12: transposeOctUpShortcut,
+    });
+    transposeDownBtn.textContent = t('transposeDown', {
+      s1: transposeDownShortcut,
+      s12: transposeOctDownShortcut,
+    });
+    resetTransposeBtn.textContent = t('resetTranspose');
+    updateToggleText();
+    updateTransposeInfo();
+  };
+  document.addEventListener('langchange', updateLangTexts);
+  updateLangTexts();
+
   resetTransposeBtn.onclick = () => {
     store.resetTranspose();
   };
 
   const tempoLabel = document.createElement('label');
   const tempoShortcut = 'Ctrl+←/→';
-  const tempoWheelHint = 'rueda';
-  tempoLabel.textContent = `Tempo (${tempoShortcut}, ${tempoWheelHint}): `;
-  tempoLabel.title = `${tempoShortcut}, rueda del ratón`;
+  const updateTempoTexts = () => {
+    tempoLabel.textContent =
+      t('tempoLabel', {
+        shortcut: tempoShortcut,
+        wheel: t('wheel'),
+      }) + ' ';
+    tempoLabel.title = t('tempoTitle', { shortcut: tempoShortcut });
+  };
+  updateTempoTexts();
+  document.addEventListener('langchange', updateTempoTexts);
   const tempoInput = document.createElement('input');
   tempoInput.type = 'number';
   tempoInput.min = '40';
