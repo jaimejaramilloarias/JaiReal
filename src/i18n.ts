@@ -64,6 +64,11 @@ const translations: Record<Lang, Record<string, string>> = {
     trash: 'Papelera',
     restore: 'Restaurar',
     close: 'Cerrar',
+    syncing: 'Sincronizando…',
+    synced: 'Sincronizado',
+    syncError: 'Error de sync',
+    syncNow: 'Sincronizar',
+    syncNowTitle: 'Forzar sincronización',
   },
   en: {
     online: 'Online',
@@ -128,6 +133,11 @@ const translations: Record<Lang, Record<string, string>> = {
     trash: 'Move to trash',
     restore: 'Restore',
     close: 'Close',
+    syncing: 'Syncing…',
+    synced: 'Synced',
+    syncError: 'Sync error',
+    syncNow: 'Sync now',
+    syncNowTitle: 'Force sync',
   },
 };
 

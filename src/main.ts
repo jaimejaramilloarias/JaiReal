@@ -4,10 +4,13 @@ import { Rail } from './ui/components/Rail';
 import { Grid } from './ui/components/Grid';
 import { Controls } from './ui/components/Controls';
 import { store } from './state/store';
+import { syncNow } from './state/sync';
 import { playChart, stopPlayback, isPlaying } from './audio/player';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 app.append(Header(), Rail(), Grid(), Controls());
+
+syncNow().catch(() => {});
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
