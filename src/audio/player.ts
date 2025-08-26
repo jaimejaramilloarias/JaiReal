@@ -1,6 +1,10 @@
 import type { Chart } from '../core/model';
 
 let audioCtx: AudioContext | null = null;
+let masterGain: GainNode | null = null;
+let masterVolume = 1;
+let loopTimeout: ReturnType<typeof setTimeout> | null = null;
+
 function getCtx(): AudioContext {
   if (!audioCtx) {
     if (typeof window === 'undefined') {
@@ -10,6 +14,9 @@ function getCtx(): AudioContext {
       (window as unknown as { webkitAudioContext: typeof AudioContext })
         .webkitAudioContext) as typeof AudioContext;
     audioCtx = new AC();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = masterVolume;
+    masterGain.connect(audioCtx.destination);
   }
   return audioCtx;
 }
@@ -56,7 +63,7 @@ function scheduleChord(freqs: number[], start: number, duration: number) {
     osc.frequency.value = f;
     const gain = ctx.createGain();
     osc.connect(gain);
-    gain.connect(ctx.destination);
+    gain.connect(masterGain ?? ctx.destination);
     const t = ctx.currentTime + start;
     const end = t + duration;
     gain.gain.setValueAtTime(0.0001, t);
@@ -75,7 +82,7 @@ export const internal = {
     osc.frequency.value = accent ? 1000 : 800;
     const gain = ctx.createGain();
     osc.connect(gain);
-    gain.connect(ctx.destination);
+    gain.connect(masterGain ?? ctx.destination);
     const t = ctx.currentTime + start;
     const end = t + 0.05;
     gain.gain.setValueAtTime(0.0001, t);
@@ -113,13 +120,50 @@ export function playChart(
   });
 }
 
+export function playSectionLoop(
+  chart: Chart,
+  sectionIndex: number,
+  tempo = 120,
+  metronome = true,
+  metronomeVolume = 1,
+) {
+  const section = chart.sections[sectionIndex];
+  if (!section) return;
+  const subChart: Chart = {
+    ...chart,
+    sections: [section],
+  };
+  playChart(subChart, tempo, metronome, metronomeVolume);
+  const beats = section.measures.reduce((sum, m) => sum + m.beats.length, 0);
+  const duration = (60 / tempo) * beats;
+  loopTimeout = setTimeout(
+    () =>
+      playSectionLoop(chart, sectionIndex, tempo, metronome, metronomeVolume),
+    duration * 1000,
+  );
+}
+
 export function stopPlayback() {
+  if (loopTimeout) {
+    clearTimeout(loopTimeout);
+    loopTimeout = null;
+  }
   if (audioCtx) {
     audioCtx.close();
     audioCtx = null;
+    masterGain = null;
   }
 }
 
 export function isPlaying() {
   return audioCtx !== null;
+}
+
+export function setMasterVolume(vol: number) {
+  masterVolume = vol;
+  if (masterGain) masterGain.gain.value = vol;
+}
+
+export function getMasterVolume() {
+  return masterVolume;
 }

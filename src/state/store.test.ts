@@ -53,6 +53,15 @@ describe('ChartStore', () => {
     expect(s2.metronomeVolume).toBe(0.25);
   });
 
+  it('sets and persists master volume', () => {
+    const s = new ChartStore();
+    expect(s.masterVolume).toBe(1);
+    s.setMasterVolume(0.5);
+    expect(s.masterVolume).toBe(0.5);
+    const s2 = new ChartStore();
+    expect(s2.masterVolume).toBe(0.5);
+  });
+
   it('selects measures and applies markers', () => {
     const s = new ChartStore();
     s.setChart({
