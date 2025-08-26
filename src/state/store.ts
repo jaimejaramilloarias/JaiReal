@@ -381,6 +381,30 @@ export class ChartStore {
     this.setChart(this.chart);
     return true;
   }
+
+  setVolta(sectionIndex: number, number: 1 | 2, from: number, to: number) {
+    const section = this.chart.sections[sectionIndex];
+    if (!section) return;
+    section.measures.forEach((m) => {
+      if (m.volta?.number === number) delete m.volta;
+    });
+    if (from < 0 || to >= section.measures.length || from > to) return;
+    section.measures[from].volta = { number, from, to };
+    this.setChart(this.chart);
+  }
+
+  clearVolta(sectionIndex: number, number: 1 | 2) {
+    const section = this.chart.sections[sectionIndex];
+    if (!section) return;
+    let changed = false;
+    section.measures.forEach((m) => {
+      if (m.volta?.number === number) {
+        delete m.volta;
+        changed = true;
+      }
+    });
+    if (changed) this.setChart(this.chart);
+  }
 }
 
 export const store = new ChartStore();

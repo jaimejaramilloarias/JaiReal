@@ -59,7 +59,7 @@ Convenciones: [ ] pendiente · [x] hecho
    [x] Hecho.
 
 8. Voltas
-   [ ] 1ª/2ª con rango; overlay y persistencia.
+   [x] 1ª/2ª con rango; overlay y persistencia.
 
 9. Transposición
    9A) Semitonos sobre toda la partitura
@@ -85,7 +85,7 @@ Convenciones: [ ] pendiente · [x] hecho
 [x] Hecho.
 
 10. Plantillas
-    [ ] AABA/Blues/Rhythm Changes/Intro-Tag-Out.
+    [x] AABA/Blues/Rhythm Changes/Intro-Tag-Out.
 
 11. Exportación
     [ ] PDF; (PNG/SVG en v1).
@@ -174,3 +174,7 @@ Criterios de aceptación (15B)
     [x] Indicar en la UI que se puede usar la rueda del ratón para el tempo.
     20M) Pruebas automáticas para la rueda de tempo
     [x] Hecho.
+    20N) Reproducción en bucle de sección
+    [ ] Permitir reproducir una sección de forma repetida.
+    20O) Control de volumen maestro
+    [ ] Ajustar el volumen general de la reproducción.
