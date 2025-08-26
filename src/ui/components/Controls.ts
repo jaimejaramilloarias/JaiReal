@@ -86,9 +86,9 @@ export function Controls(): HTMLElement {
 
   const saveLibBtn = document.createElement('button');
   saveLibBtn.onclick = async () => {
-    const title = prompt('Título', store.chart.title);
+    const title = prompt(t('promptTitle'), store.chart.title);
     if (!title) return;
-    const tagStr = prompt('Etiquetas (separadas por coma)', '');
+    const tagStr = prompt(t('promptTags'), '');
     const tags = tagStr
       ? tagStr
           .split(',')
@@ -195,16 +195,15 @@ export function Controls(): HTMLElement {
 
   const tempoLabel = document.createElement('label');
   const tempoShortcut = 'Ctrl+←/→';
+  const tempoText = document.createTextNode('');
   const updateTempoTexts = () => {
-    tempoLabel.textContent =
+    tempoText.textContent =
       t('tempoLabel', {
         shortcut: tempoShortcut,
         wheel: t('wheel'),
       }) + ' ';
     tempoLabel.title = t('tempoTitle', { shortcut: tempoShortcut });
   };
-  updateTempoTexts();
-  document.addEventListener('langchange', updateTempoTexts);
   const tempoInput = document.createElement('input');
   tempoInput.type = 'number';
   tempoInput.min = '40';
@@ -223,11 +222,13 @@ export function Controls(): HTMLElement {
     store.setTempo(bpm);
     tempoInput.value = String(bpm);
   });
-  tempoLabel.appendChild(tempoInput);
+  tempoLabel.append(tempoText, tempoInput);
+  updateTempoTexts();
+  document.addEventListener('langchange', updateTempoTexts);
 
   const masterVolLabel = document.createElement('label');
   const masterVolShortcut = 'Alt+Shift+↑/↓/0';
-  masterVolLabel.textContent = `Volumen (${masterVolShortcut}): `;
+  const masterVolText = document.createTextNode('');
   masterVolLabel.title = masterVolShortcut;
   const masterVolInput = document.createElement('input');
   masterVolInput.type = 'range';
@@ -241,11 +242,11 @@ export function Controls(): HTMLElement {
       store.setMasterVolume(val);
     }
   };
-  masterVolLabel.appendChild(masterVolInput);
+  masterVolLabel.append(masterVolText, masterVolInput);
 
   const chordVolLabel = document.createElement('label');
   const chordVolShortcut = 'Ctrl+Alt+Shift+↑/↓';
-  chordVolLabel.textContent = `Volumen acordes (${chordVolShortcut}): `;
+  const chordVolText = document.createTextNode('');
   chordVolLabel.title = chordVolShortcut;
   const chordVolInput = document.createElement('input');
   chordVolInput.type = 'range';
@@ -259,37 +260,36 @@ export function Controls(): HTMLElement {
       store.setChordVolume(val);
     }
   };
-  chordVolLabel.appendChild(chordVolInput);
+  chordVolLabel.append(chordVolText, chordVolInput);
 
   const chordWaveLabel = document.createElement('label');
-  chordWaveLabel.textContent = 'Timbre acordes: ';
+  const chordWaveText = document.createTextNode('');
   const chordWaveSelect = document.createElement('select');
-  (['sine', 'square', 'triangle', 'sawtooth'] as WaveType[]).forEach((t) => {
+  (['sine', 'square', 'triangle', 'sawtooth'] as WaveType[]).forEach((w) => {
     const opt = document.createElement('option');
-    opt.value = t;
-    opt.textContent = t;
+    opt.value = w;
+    opt.textContent = t(`wave_${w}`);
     chordWaveSelect.appendChild(opt);
   });
   chordWaveSelect.value = store.chordWave;
   chordWaveSelect.onchange = () => {
     store.setChordWave(chordWaveSelect.value as WaveType);
   };
-  chordWaveLabel.appendChild(chordWaveSelect);
+  chordWaveLabel.append(chordWaveText, chordWaveSelect);
 
   const metronomeBtn = document.createElement('button');
   const updateMetronomeText = () => {
     metronomeBtn.textContent = store.metronome
-      ? 'Desactivar metrónomo'
-      : 'Activar metrónomo';
+      ? t('metronomeOff')
+      : t('metronomeOn');
   };
-  updateMetronomeText();
   metronomeBtn.onclick = () => {
     store.toggleMetronome();
   };
 
   const metronomeVolLabel = document.createElement('label');
   const metronomeVolShortcut = 'Ctrl+Shift+↑/↓';
-  metronomeVolLabel.textContent = `Volumen metrónomo (${metronomeVolShortcut}): `;
+  const metronomeVolText = document.createTextNode('');
   metronomeVolLabel.title = metronomeVolShortcut;
   const metronomeVolInput = document.createElement('input');
   metronomeVolInput.type = 'range';
@@ -303,12 +303,10 @@ export function Controls(): HTMLElement {
       store.setMetronomeVolume(val);
     }
   };
-  metronomeVolLabel.appendChild(metronomeVolInput);
+  metronomeVolLabel.append(metronomeVolText, metronomeVolInput);
 
   const playBtn = document.createElement('button');
-  const playShortcut = 'Espacio';
-  playBtn.textContent = `Reproducir (${playShortcut})`;
-  playBtn.title = playShortcut;
+  const stopBtn = document.createElement('button');
   playBtn.onclick = () => {
     setMasterVolume(store.masterVolume);
     playChart(
@@ -320,16 +318,11 @@ export function Controls(): HTMLElement {
       store.chordWave,
     );
   };
-
-  const stopBtn = document.createElement('button');
-  stopBtn.textContent = `Detener (${playShortcut})`;
-  stopBtn.title = playShortcut;
   stopBtn.onclick = () => {
     stopPlayback();
   };
 
   const loopBtn = document.createElement('button');
-  loopBtn.textContent = 'Repetir sección';
   loopBtn.onclick = () => {
     if (store.selectedSection !== null) {
       setMasterVolume(store.masterVolume);
@@ -346,12 +339,12 @@ export function Controls(): HTMLElement {
   };
 
   const instrumentLabel = document.createElement('label');
-  instrumentLabel.textContent = 'Vista: ';
+  const instrumentText = document.createTextNode('');
   instrumentLabel.htmlFor = 'instrument-select';
   const instrumentSelect = document.createElement('select');
   instrumentSelect.id = 'instrument-select';
   [
-    ['C', 'Concierto'],
+    ['C', 'C'],
     ['Bb', 'Bb'],
     ['Eb', 'Eb'],
     ['F', 'F'],
@@ -361,9 +354,10 @@ export function Controls(): HTMLElement {
     opt.textContent = text;
     instrumentSelect.appendChild(opt);
   });
+  instrumentLabel.append(instrumentText, instrumentSelect);
 
   const accidentalLabel = document.createElement('label');
-  accidentalLabel.textContent = 'Preferir: ';
+  const accidentalText = document.createTextNode('');
   accidentalLabel.htmlFor = 'accidental-select';
   const accidentalSelect = document.createElement('select');
   accidentalSelect.id = 'accidental-select';
@@ -376,6 +370,7 @@ export function Controls(): HTMLElement {
     opt.textContent = text;
     accidentalSelect.appendChild(opt);
   });
+  accidentalLabel.append(accidentalText, accidentalSelect);
 
   const updateViewControls = () => {
     instrumentSelect.value = store.instrument;
@@ -399,15 +394,14 @@ export function Controls(): HTMLElement {
   const themeBtn = document.createElement('button');
   const updateThemeBtn = () => {
     themeBtn.textContent =
-      store.theme === 'dark' ? 'Tema claro' : 'Tema oscuro';
+      store.theme === 'dark' ? t('lightTheme') : t('darkTheme');
   };
-  updateThemeBtn();
   themeBtn.onclick = () => {
     store.toggleTheme();
   };
 
   const fontSizeLabel = document.createElement('label');
-  fontSizeLabel.textContent = 'Tamaño fuente: ';
+  const fontSizeText = document.createTextNode('');
   const fontSizeInput = document.createElement('input');
   fontSizeInput.type = 'number';
   fontSizeInput.min = '12';
@@ -417,10 +411,10 @@ export function Controls(): HTMLElement {
     const val = Number(fontSizeInput.value);
     if (!Number.isNaN(val)) store.setFontSize(val);
   };
-  fontSizeLabel.appendChild(fontSizeInput);
+  fontSizeLabel.append(fontSizeText, fontSizeInput);
 
   const voltaLabel = document.createElement('label');
-  voltaLabel.textContent = 'Volta: ';
+  const voltaText = document.createTextNode('');
   const voltaSelect = document.createElement('select');
   ['', '1', '2'].forEach((v) => {
     const opt = document.createElement('option');
@@ -431,13 +425,10 @@ export function Controls(): HTMLElement {
   const voltaFrom = document.createElement('input');
   voltaFrom.type = 'number';
   voltaFrom.min = '1';
-  voltaFrom.placeholder = 'desde';
   const voltaTo = document.createElement('input');
   voltaTo.type = 'number';
   voltaTo.min = '1';
-  voltaTo.placeholder = 'hasta';
   const voltaBtn = document.createElement('button');
-  voltaBtn.textContent = 'Aplicar';
   voltaBtn.onclick = () => {
     if (store.selectedSection === null) return;
     const num = Number(voltaSelect.value);
@@ -448,16 +439,15 @@ export function Controls(): HTMLElement {
     }
   };
   const clearVoltaBtn = document.createElement('button');
-  clearVoltaBtn.textContent = 'Borrar voltas';
   clearVoltaBtn.onclick = () => {
     if (store.selectedSection === null) return;
     store.clearVolta(store.selectedSection, 1);
     store.clearVolta(store.selectedSection, 2);
   };
-  voltaLabel.append(voltaSelect, voltaFrom, voltaTo, voltaBtn);
+  voltaLabel.append(voltaText, voltaSelect, voltaFrom, voltaTo, voltaBtn);
 
   const markerLabel = document.createElement('label');
-  markerLabel.textContent = 'Marcador: ';
+  const markerText = document.createTextNode('');
   const markerSelect = document.createElement('select');
   const markerOptions: (Marker | '')[] = [
     '',
@@ -474,9 +464,10 @@ export function Controls(): HTMLElement {
   markerOptions.forEach((m) => {
     const opt = document.createElement('option');
     opt.value = m;
-    opt.textContent = m || '(sin marcador)';
+    opt.textContent = m || t('noMarker');
     markerSelect.appendChild(opt);
   });
+  markerLabel.append(markerText, markerSelect);
   const updateMarkerSelect = () => {
     if (store.selectedSection === null || store.selectedMeasure === null) {
       markerSelect.disabled = true;
@@ -493,6 +484,46 @@ export function Controls(): HTMLElement {
   markerSelect.onchange = () => {
     store.setMarker(markerSelect.value as Marker | '');
   };
+
+  const updateControlTexts = () => {
+    masterVolText.textContent =
+      t('masterVolumeLabel', { shortcut: masterVolShortcut }) + ' ';
+    chordVolText.textContent =
+      t('chordVolumeLabel', { shortcut: chordVolShortcut }) + ' ';
+    chordWaveText.textContent = t('chordWaveLabel') + ' ';
+    metronomeVolText.textContent =
+      t('metronomeVolLabel', { shortcut: metronomeVolShortcut }) + ' ';
+    loopBtn.textContent = t('loopSection');
+    instrumentText.textContent = t('instrumentLabel') + ' ';
+    accidentalText.textContent = t('accidentalLabel') + ' ';
+    fontSizeText.textContent = t('fontSizeLabel') + ' ';
+    voltaText.textContent = t('voltaLabel') + ' ';
+    voltaFrom.placeholder = t('voltaFrom');
+    voltaTo.placeholder = t('voltaTo');
+    voltaBtn.textContent = t('apply');
+    clearVoltaBtn.textContent = t('clearVoltas');
+    markerText.textContent = t('markerLabel') + ' ';
+    const noMarkerOpt = markerSelect.querySelector('option[value=""]');
+    if (noMarkerOpt) noMarkerOpt.textContent = t('noMarker');
+    chordWaveSelect.querySelectorAll('option').forEach((opt) => {
+      const val = opt.value as WaveType;
+      opt.textContent = t(`wave_${val}`);
+    });
+    updateMetronomeText();
+    updateThemeBtn();
+  };
+  document.addEventListener('langchange', updateControlTexts);
+  updateControlTexts();
+
+  const updatePlayTexts = () => {
+    const shortcut = t('spaceKey');
+    playBtn.textContent = t('play', { shortcut });
+    playBtn.title = shortcut;
+    stopBtn.textContent = t('stop', { shortcut });
+    stopBtn.title = shortcut;
+  };
+  document.addEventListener('langchange', updatePlayTexts);
+  updatePlayTexts();
 
   store.onMessage((msg) => {
     messageText.textContent = msg;
@@ -520,7 +551,6 @@ export function Controls(): HTMLElement {
   });
   updateMarkerSelect();
 
-  markerLabel.appendChild(markerSelect);
   el.append(
     saveBtn,
     loadInput,
@@ -544,9 +574,7 @@ export function Controls(): HTMLElement {
     loopBtn,
     metronomeBtn,
     instrumentLabel,
-    instrumentSelect,
     accidentalLabel,
-    accidentalSelect,
     themeBtn,
     fontSizeLabel,
     voltaLabel,

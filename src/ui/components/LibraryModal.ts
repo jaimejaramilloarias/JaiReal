@@ -1,4 +1,5 @@
 import { listCharts as listLibraryCharts } from '../../state/library';
+import { t } from '../../i18n';
 
 export function LibraryModal(onSelect: (id: string) => void): HTMLElement {
   const overlay = document.createElement('div');
@@ -8,19 +9,30 @@ export function LibraryModal(onSelect: (id: string) => void): HTMLElement {
   content.className = 'library-modal-content';
 
   const closeBtn = document.createElement('button');
-  closeBtn.textContent = 'Cerrar';
   closeBtn.type = 'button';
+  const updateCloseText = () => {
+    closeBtn.textContent = t('close');
+  };
+  updateCloseText();
   closeBtn.onclick = () => overlay.remove();
+  document.addEventListener('langchange', updateCloseText);
 
   const titleLabel = document.createElement('label');
-  titleLabel.textContent = 'Título:';
+  const titleText = document.createTextNode('');
   const titleInput = document.createElement('input');
-  titleLabel.appendChild(titleInput);
+  titleLabel.append(titleText, titleInput);
 
   const tagLabel = document.createElement('label');
-  tagLabel.textContent = 'Etiqueta:';
+  const tagText = document.createTextNode('');
   const tagInput = document.createElement('input');
-  tagLabel.appendChild(tagInput);
+  tagLabel.append(tagText, tagInput);
+
+  const updateTexts = () => {
+    titleText.textContent = t('title') + ':';
+    tagText.textContent = t('tag') + ':';
+  };
+  updateTexts();
+  document.addEventListener('langchange', updateTexts);
 
   const list = document.createElement('ul');
 
@@ -29,7 +41,7 @@ export function LibraryModal(onSelect: (id: string) => void): HTMLElement {
       title: titleInput.value || undefined,
       tag: tagInput.value || undefined,
     });
-    list.innerHTML = '';
+    while (list.firstChild) list.removeChild(list.firstChild);
     charts.forEach((c) => {
       const li = document.createElement('li');
       const btn = document.createElement('button');
