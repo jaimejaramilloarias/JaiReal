@@ -75,13 +75,17 @@ export function Controls(): HTMLElement {
   };
 
   const transposeUpBtn = document.createElement('button');
-  transposeUpBtn.textContent = 'Transponer +1';
+  const transposeUpShortcut = 'Ctrl+↑';
+  transposeUpBtn.textContent = `Transponer +1 (${transposeUpShortcut})`;
+  transposeUpBtn.title = transposeUpShortcut;
   transposeUpBtn.onclick = () => {
     store.transpose(1);
   };
 
   const transposeDownBtn = document.createElement('button');
-  transposeDownBtn.textContent = 'Transponer -1';
+  const transposeDownShortcut = 'Ctrl+↓';
+  transposeDownBtn.textContent = `Transponer -1 (${transposeDownShortcut})`;
+  transposeDownBtn.title = transposeDownShortcut;
   transposeDownBtn.onclick = () => {
     store.transpose(-1);
   };

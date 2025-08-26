@@ -225,4 +225,11 @@ describe('ChartStore', () => {
     expect(beat.chord).toBe('C');
     expect(s.manualTranspose).toBe(0);
   });
+
+  it('persists manual transpose between sessions', () => {
+    const s = new ChartStore();
+    s.transpose(2);
+    const s2 = new ChartStore();
+    expect(s2.manualTranspose).toBe(2);
+  });
 });
