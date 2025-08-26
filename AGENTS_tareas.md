@@ -54,6 +54,8 @@ Convenciones: [ ] pendiente · [x] hecho
    7E) Pruebas automáticas para el botón de cierre
    [x] Hecho.
    7F) Accesibilidad del mensaje (foco y ARIA)
+   [x] Hecho.
+   7G) Restaurar foco al elemento activador al cerrar el mensaje
    [ ] Pendiente.
 
 8. Voltas

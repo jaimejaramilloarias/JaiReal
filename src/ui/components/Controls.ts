@@ -8,11 +8,14 @@ export function Controls(): HTMLElement {
   const messageEl = document.createElement('div');
   messageEl.className = 'message';
   messageEl.setAttribute('role', 'alert');
+  messageEl.setAttribute('aria-live', 'assertive');
+  messageEl.tabIndex = -1;
   const messageText = document.createElement('span');
   const closeBtn = document.createElement('button');
   closeBtn.className = 'message-close';
   closeBtn.type = 'button';
   closeBtn.textContent = '×';
+  closeBtn.setAttribute('aria-label', 'Cerrar mensaje');
   messageEl.append(messageText, closeBtn);
 
   let hideTimeout: number | undefined;
@@ -104,6 +107,7 @@ export function Controls(): HTMLElement {
   store.onMessage((msg) => {
     messageText.textContent = msg;
     messageEl.style.display = 'flex';
+    messageEl.focus();
     hideTimeout = window.setTimeout(() => {
       hideMessage();
     }, 3000);

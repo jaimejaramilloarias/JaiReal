@@ -9,6 +9,9 @@ test('close marker validation message manually', async ({ page }) => {
   const message = page.locator('.message');
   await expect(message).toBeVisible();
   await expect(message).toContainText('Fine requiere D.C. o D.S.');
+  await expect(message).toBeFocused();
+  await expect(message).toHaveAttribute('role', 'alert');
+  await expect(message).toHaveAttribute('aria-live', 'assertive');
   await page.click('.message-close');
   await expect(message).toBeHidden();
 });
