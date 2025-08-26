@@ -165,4 +165,8 @@ Criterios de aceptación (15B)
     20H) Mostrar atajo de volumen en la interfaz
     [x] Indicar en la UI los atajos de teclado para el volumen del metrónomo.
     20I) Atajos de teclado para tempo
-    [ ] Permitir subir o bajar el tempo mediante combinaciones de teclas.
+    [x] Permitir subir o bajar el tempo mediante combinaciones de teclas.
+    20J) Atajo de teclado para reproducir/detener
+    [x] Espacio para iniciar o detener la reproducción.
+    20K) Control de tempo con la rueda del ratón
+    [ ] Ajustar el tempo girando la rueda sobre el control correspondiente.

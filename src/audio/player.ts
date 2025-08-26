@@ -119,3 +119,7 @@ export function stopPlayback() {
     audioCtx = null;
   }
 }
+
+export function isPlaying() {
+  return audioCtx !== null;
+}

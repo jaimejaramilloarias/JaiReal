@@ -107,7 +107,9 @@ export function Controls(): HTMLElement {
   };
 
   const tempoLabel = document.createElement('label');
-  tempoLabel.textContent = 'Tempo: ';
+  const tempoShortcut = 'Ctrl+←/→';
+  tempoLabel.textContent = `Tempo (${tempoShortcut}): `;
+  tempoLabel.title = tempoShortcut;
   const tempoInput = document.createElement('input');
   tempoInput.type = 'number';
   tempoInput.min = '40';
@@ -151,13 +153,16 @@ export function Controls(): HTMLElement {
   metronomeVolLabel.appendChild(metronomeVolInput);
 
   const playBtn = document.createElement('button');
-  playBtn.textContent = 'Reproducir';
+  const playShortcut = 'Espacio';
+  playBtn.textContent = `Reproducir (${playShortcut})`;
+  playBtn.title = playShortcut;
   playBtn.onclick = () => {
     playChart(store.chart, store.tempo, store.metronome, store.metronomeVolume);
   };
 
   const stopBtn = document.createElement('button');
-  stopBtn.textContent = 'Detener';
+  stopBtn.textContent = `Detener (${playShortcut})`;
+  stopBtn.title = playShortcut;
   stopBtn.onclick = () => {
     stopPlayback();
   };
