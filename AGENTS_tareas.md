@@ -205,3 +205,7 @@ Criterios de aceptación (15B)
   [x] Recordar el volumen de los acordes entre sesiones.
   20X) Conteo previo a la reproducción
   [x] Reproducir un conteo (count-in) antes de iniciar la reproducción.
+  20Y) Timbre de acordes seleccionable
+  [x] Permitir escoger la forma de onda (sine/square/triangle/sawtooth) para los acordes.
+  20Z) Persistencia de timbre de acordes
+  [x] Recordar la forma de onda seleccionada entre sesiones.

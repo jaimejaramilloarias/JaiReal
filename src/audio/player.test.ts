@@ -120,8 +120,45 @@ describe('playChart metronome', () => {
       ],
     };
     const spy = vi.spyOn(player.internal, 'scheduleClick');
-    player.playChart(chart, 120, true, 1, 1, 2);
+    player.playChart(chart, 120, true, 1, 1, 'sine', 2);
     expect(spy).toHaveBeenCalledTimes(6); // 4 beats + 2 count-in
+  });
+
+  it('uses provided waveform for chords', () => {
+    const chart: Chart = {
+      schemaVersion: 1,
+      title: '',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: 'C' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const created: FakeOscillator[] = [];
+    class TestAudioContext extends FakeAudioContext {
+      createOscillator() {
+        const o = new FakeOscillator();
+        created.push(o);
+        return o;
+      }
+    }
+    // @ts-expect-error test stub
+    window.AudioContext = TestAudioContext as unknown as typeof AudioContext;
+    // @ts-expect-error test stub
+    window.webkitAudioContext =
+      TestAudioContext as unknown as typeof AudioContext;
+    player.playChart(chart, 120, false, 1, 1, 'square');
+    expect(created[0]?.type).toBe('square');
   });
 });
 

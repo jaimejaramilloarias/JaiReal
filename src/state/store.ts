@@ -6,6 +6,8 @@ import {
 } from '../core/model';
 import { transposeChord } from '../core/transpose';
 
+type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth';
+
 const STORAGE_KEY = 'jaireal.chart';
 const SHOW_SECONDARY_KEY = 'jaireal.showSecondary';
 const VIEW_KEY = 'jaireal.view';
@@ -15,6 +17,7 @@ const METRONOME_KEY = 'jaireal.metronome';
 const METRONOME_VOLUME_KEY = 'jaireal.metronomeVolume';
 const MASTER_VOLUME_KEY = 'jaireal.masterVolume';
 const CHORD_VOLUME_KEY = 'jaireal.chordVolume';
+const CHORD_WAVE_KEY = 'jaireal.chordWave';
 
 type Instrument = 'C' | 'Bb' | 'Eb' | 'F';
 const instrumentSemitones: Record<Instrument, number> = {
@@ -50,6 +53,7 @@ export class ChartStore {
   metronomeVolume: number;
   masterVolume: number;
   chordVolume: number;
+  chordWave: WaveType;
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
@@ -67,6 +71,7 @@ export class ChartStore {
     this.metronomeVolume = this.loadMetronomeVolume();
     this.masterVolume = this.loadMasterVolume();
     this.chordVolume = this.loadChordVolume();
+    this.chordWave = this.loadChordWave();
   }
 
   private loadChart(): Chart {
@@ -224,6 +229,22 @@ export class ChartStore {
     localStorage.setItem(CHORD_VOLUME_KEY, JSON.stringify(this.chordVolume));
   }
 
+  private loadChordWave(): WaveType {
+    try {
+      const raw = localStorage.getItem(CHORD_WAVE_KEY);
+      if (raw) {
+        return JSON.parse(raw) as WaveType;
+      }
+    } catch {
+      // ignore
+    }
+    return 'sine';
+  }
+
+  private persistChordWave() {
+    localStorage.setItem(CHORD_WAVE_KEY, JSON.stringify(this.chordWave));
+  }
+
   private persistMetronomeVolume() {
     localStorage.setItem(
       METRONOME_VOLUME_KEY,
@@ -290,6 +311,12 @@ export class ChartStore {
   setChordVolume(vol: number) {
     this.chordVolume = vol;
     this.persistChordVolume();
+    this.listeners.forEach((l) => l());
+  }
+
+  setChordWave(wave: WaveType) {
+    this.chordWave = wave;
+    this.persistChordWave();
     this.listeners.forEach((l) => l());
   }
 

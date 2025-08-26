@@ -9,6 +9,8 @@ import {
 import { exportChartPDF } from '../../export/pdf';
 import { getTemplate, type TemplateName } from '../../core/templates';
 
+type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth';
+
 export function Controls(): HTMLElement {
   const el = document.createElement('div');
   el.className = 'controls';
@@ -203,6 +205,21 @@ export function Controls(): HTMLElement {
   };
   chordVolLabel.appendChild(chordVolInput);
 
+  const chordWaveLabel = document.createElement('label');
+  chordWaveLabel.textContent = 'Timbre acordes: ';
+  const chordWaveSelect = document.createElement('select');
+  (['sine', 'square', 'triangle', 'sawtooth'] as WaveType[]).forEach((t) => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    chordWaveSelect.appendChild(opt);
+  });
+  chordWaveSelect.value = store.chordWave;
+  chordWaveSelect.onchange = () => {
+    store.setChordWave(chordWaveSelect.value as WaveType);
+  };
+  chordWaveLabel.appendChild(chordWaveSelect);
+
   const metronomeBtn = document.createElement('button');
   const updateMetronomeText = () => {
     metronomeBtn.textContent = store.metronome
@@ -244,6 +261,7 @@ export function Controls(): HTMLElement {
       store.metronome,
       store.metronomeVolume,
       store.chordVolume,
+      store.chordWave,
     );
   };
 
@@ -266,6 +284,7 @@ export function Controls(): HTMLElement {
         store.metronome,
         store.metronomeVolume,
         store.chordVolume,
+        store.chordWave,
       );
     }
   };
@@ -412,6 +431,7 @@ export function Controls(): HTMLElement {
     metronomeVolInput.value = String(store.metronomeVolume);
     masterVolInput.value = String(store.masterVolume);
     chordVolInput.value = String(store.chordVolume);
+    chordWaveSelect.value = store.chordWave;
   });
   updateMarkerSelect();
 
@@ -430,6 +450,7 @@ export function Controls(): HTMLElement {
     tempoLabel,
     masterVolLabel,
     chordVolLabel,
+    chordWaveLabel,
     metronomeVolLabel,
     playBtn,
     stopBtn,
