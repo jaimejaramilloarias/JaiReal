@@ -291,7 +291,9 @@ export function Controls(): HTMLElement {
 
   const instrumentLabel = document.createElement('label');
   instrumentLabel.textContent = 'Vista: ';
+  instrumentLabel.htmlFor = 'instrument-select';
   const instrumentSelect = document.createElement('select');
+  instrumentSelect.id = 'instrument-select';
   [
     ['C', 'Concierto'],
     ['Bb', 'Bb'],
@@ -306,7 +308,9 @@ export function Controls(): HTMLElement {
 
   const accidentalLabel = document.createElement('label');
   accidentalLabel.textContent = 'Preferir: ';
+  accidentalLabel.htmlFor = 'accidental-select';
   const accidentalSelect = document.createElement('select');
+  accidentalSelect.id = 'accidental-select';
   [
     ['sharp', '♯'],
     ['flat', '♭'],
@@ -335,6 +339,29 @@ export function Controls(): HTMLElement {
       accidentalSelect.value === 'sharp',
     );
   };
+
+  const themeBtn = document.createElement('button');
+  const updateThemeBtn = () => {
+    themeBtn.textContent =
+      store.theme === 'dark' ? 'Tema claro' : 'Tema oscuro';
+  };
+  updateThemeBtn();
+  themeBtn.onclick = () => {
+    store.toggleTheme();
+  };
+
+  const fontSizeLabel = document.createElement('label');
+  fontSizeLabel.textContent = 'Tamaño fuente: ';
+  const fontSizeInput = document.createElement('input');
+  fontSizeInput.type = 'number';
+  fontSizeInput.min = '12';
+  fontSizeInput.max = '24';
+  fontSizeInput.value = String(store.fontSize);
+  fontSizeInput.onchange = () => {
+    const val = Number(fontSizeInput.value);
+    if (!Number.isNaN(val)) store.setFontSize(val);
+  };
+  fontSizeLabel.appendChild(fontSizeInput);
 
   const voltaLabel = document.createElement('label');
   voltaLabel.textContent = 'Volta: ';
@@ -432,6 +459,8 @@ export function Controls(): HTMLElement {
     masterVolInput.value = String(store.masterVolume);
     chordVolInput.value = String(store.chordVolume);
     chordWaveSelect.value = store.chordWave;
+    updateThemeBtn();
+    fontSizeInput.value = String(store.fontSize);
   });
   updateMarkerSelect();
 
@@ -460,6 +489,8 @@ export function Controls(): HTMLElement {
     instrumentSelect,
     accidentalLabel,
     accidentalSelect,
+    themeBtn,
+    fontSizeLabel,
     voltaLabel,
     clearVoltaBtn,
     markerLabel,

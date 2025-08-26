@@ -9,6 +9,13 @@ import { playChart, stopPlayback, isPlaying } from './audio/player';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 app.append(Header(), Rail(), Grid(), Controls());
 
+const applyPrefs = () => {
+  document.body.classList.toggle('dark', store.theme === 'dark');
+  document.body.style.setProperty('--font-size', `${store.fontSize}px`);
+};
+applyPrefs();
+store.subscribe(applyPrefs);
+
 window.addEventListener('keydown', (ev) => {
   if (ev.ctrlKey && ev.altKey && ev.shiftKey && ev.key === 'ArrowUp') {
     const vol = Math.min(1, Math.round((store.chordVolume + 0.1) * 100) / 100);

@@ -18,6 +18,8 @@ const METRONOME_VOLUME_KEY = 'jaireal.metronomeVolume';
 const MASTER_VOLUME_KEY = 'jaireal.masterVolume';
 const CHORD_VOLUME_KEY = 'jaireal.chordVolume';
 const CHORD_WAVE_KEY = 'jaireal.chordWave';
+const THEME_KEY = 'jaireal.theme';
+const FONT_SIZE_KEY = 'jaireal.fontSize';
 
 type Instrument = 'C' | 'Bb' | 'Eb' | 'F';
 const instrumentSemitones: Record<Instrument, number> = {
@@ -54,6 +56,8 @@ export class ChartStore {
   masterVolume: number;
   chordVolume: number;
   chordWave: WaveType;
+  theme: 'light' | 'dark';
+  fontSize: number;
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
@@ -72,6 +76,8 @@ export class ChartStore {
     this.masterVolume = this.loadMasterVolume();
     this.chordVolume = this.loadChordVolume();
     this.chordWave = this.loadChordWave();
+    this.theme = this.loadTheme();
+    this.fontSize = this.loadFontSize();
   }
 
   private loadChart(): Chart {
@@ -252,6 +258,34 @@ export class ChartStore {
     );
   }
 
+  private loadTheme(): 'light' | 'dark' {
+    try {
+      const raw = localStorage.getItem(THEME_KEY);
+      if (raw === 'dark' || raw === 'light') return raw;
+    } catch {
+      // ignore
+    }
+    return 'light';
+  }
+
+  private persistTheme() {
+    localStorage.setItem(THEME_KEY, this.theme);
+  }
+
+  private loadFontSize(): number {
+    try {
+      const raw = localStorage.getItem(FONT_SIZE_KEY);
+      if (raw) return JSON.parse(raw) as number;
+    } catch {
+      // ignore
+    }
+    return 16;
+  }
+
+  private persistFontSize() {
+    localStorage.setItem(FONT_SIZE_KEY, JSON.stringify(this.fontSize));
+  }
+
   subscribe(listener: Listener) {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -320,6 +354,18 @@ export class ChartStore {
     this.listeners.forEach((l) => l());
   }
 
+  toggleTheme() {
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    this.persistTheme();
+    this.listeners.forEach((l) => l());
+  }
+
+  setFontSize(size: number) {
+    this.fontSize = size;
+    this.persistFontSize();
+    this.listeners.forEach((l) => l());
+  }
+
   transpose(
     semitones: number,
     preferSharps: boolean = this.preferSharps,
@@ -345,10 +391,10 @@ export class ChartStore {
   setInstrument(instrument: Instrument, preferSharps = this.preferSharps) {
     const diff =
       instrumentSemitones[instrument] - instrumentSemitones[this.instrument];
-    this.transpose(diff, preferSharps, false);
     this.instrument = instrument;
     this.preferSharps = preferSharps;
     this.persistView();
+    this.transpose(diff, preferSharps, false);
   }
 
   resetTranspose() {
