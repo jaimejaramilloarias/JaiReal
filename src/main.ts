@@ -4,6 +4,7 @@ import { Rail } from './ui/components/Rail';
 import { Grid } from './ui/components/Grid';
 import { Controls } from './ui/components/Controls';
 import { store } from './state/store';
+import { playChart, stopPlayback, isPlaying } from './audio/player';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 app.append(Header(), Rail(), Grid(), Controls());
@@ -49,6 +50,32 @@ window.addEventListener('keydown', (ev) => {
   }
   if (ev.ctrlKey && ev.key === 'ArrowDown') {
     store.transpose(-1);
+    ev.preventDefault();
+    return;
+  }
+  if (ev.ctrlKey && ev.key === 'ArrowRight') {
+    const bpm = Math.min(240, store.tempo + 5);
+    store.setTempo(bpm);
+    ev.preventDefault();
+    return;
+  }
+  if (ev.ctrlKey && ev.key === 'ArrowLeft') {
+    const bpm = Math.max(40, store.tempo - 5);
+    store.setTempo(bpm);
+    ev.preventDefault();
+    return;
+  }
+  if (ev.code === 'Space') {
+    if (isPlaying()) {
+      stopPlayback();
+    } else {
+      playChart(
+        store.chart,
+        store.tempo,
+        store.metronome,
+        store.metronomeVolume,
+      );
+    }
     ev.preventDefault();
   }
 });
