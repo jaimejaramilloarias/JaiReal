@@ -179,6 +179,8 @@ Criterios de aceptación (15B)
     20O) Control de volumen maestro
     [x] Ajustar el volumen general de la reproducción.
     20P) Atajo de teclado para volumen maestro
-    [ ] Permitir ajustar el volumen maestro con combinaciones de teclas.
+    [x] Permitir ajustar el volumen maestro con combinaciones de teclas.
     20Q) Mostrar atajo de volumen maestro en la interfaz
-    [ ] Indicar en la UI los atajos de teclado para el volumen maestro.
+    [x] Indicar en la UI los atajos de teclado para el volumen maestro.
+    20R) Atajo para restablecer volumen maestro
+    [ ] Permitir volver el volumen maestro a 100% con un atajo de teclado.

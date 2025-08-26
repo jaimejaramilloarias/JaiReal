@@ -161,7 +161,9 @@ export function Controls(): HTMLElement {
   tempoLabel.appendChild(tempoInput);
 
   const masterVolLabel = document.createElement('label');
-  masterVolLabel.textContent = 'Volumen: ';
+  const masterVolShortcut = 'Alt+Shift+↑/↓';
+  masterVolLabel.textContent = `Volumen (${masterVolShortcut}): `;
+  masterVolLabel.title = masterVolShortcut;
   const masterVolInput = document.createElement('input');
   masterVolInput.type = 'range';
   masterVolInput.min = '0';
