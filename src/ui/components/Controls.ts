@@ -5,6 +5,9 @@ export function Controls(): HTMLElement {
   const el = document.createElement('div');
   el.className = 'controls';
 
+  const messageEl = document.createElement('div');
+  messageEl.className = 'message';
+
   const saveBtn = document.createElement('button');
   saveBtn.textContent = 'Guardar JSON';
   saveBtn.onclick = () => {
@@ -80,6 +83,15 @@ export function Controls(): HTMLElement {
     store.setMarker(markerSelect.value as Marker | '');
   };
 
+  store.onMessage((msg) => {
+    messageEl.textContent = msg;
+    messageEl.style.display = 'block';
+    setTimeout(() => {
+      messageEl.textContent = '';
+      messageEl.style.display = 'none';
+    }, 3000);
+  });
+
   store.subscribe(() => {
     updateToggleText();
     updateMarkerSelect();
@@ -87,6 +99,6 @@ export function Controls(): HTMLElement {
   updateMarkerSelect();
 
   markerLabel.appendChild(markerSelect);
-  el.append(saveBtn, loadInput, toggleSecondaryBtn, markerLabel);
+  el.append(saveBtn, loadInput, toggleSecondaryBtn, markerLabel, messageEl);
   return el;
 }
