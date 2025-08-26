@@ -99,8 +99,10 @@ Convenciones: [ ] pendiente · [x] hecho
     13A) CSV básico
         [x] Importación CSV simple con tests.
     13B) ChordPro
-        [ ] Pendiente.
+        [x] Importación ChordPro simple con tests.
     13C) iReal
+        [x] Importación iReal simple con tests.
+    13D) MusicXML
         [ ] Pendiente.
 
 14. Preferencias/Vista
