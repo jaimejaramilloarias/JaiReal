@@ -10,6 +10,7 @@ const STORAGE_KEY = 'jaireal.chart';
 const SHOW_SECONDARY_KEY = 'jaireal.showSecondary';
 const VIEW_KEY = 'jaireal.view';
 const MANUAL_TRANSPOSE_KEY = 'jaireal.manualTranspose';
+const TEMPO_KEY = 'jaireal.tempo';
 
 type Instrument = 'C' | 'Bb' | 'Eb' | 'F';
 const instrumentSemitones: Record<Instrument, number> = {
@@ -40,6 +41,7 @@ export class ChartStore {
   instrument: Instrument;
   preferSharps: boolean;
   manualTranspose = 0;
+  tempo: number;
   selectedSection: number | null = null;
   selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
@@ -52,6 +54,7 @@ export class ChartStore {
     this.instrument = view.instrument;
     this.preferSharps = view.preferSharps;
     this.manualTranspose = this.loadManualTranspose();
+    this.tempo = this.loadTempo();
   }
 
   private loadChart(): Chart {
@@ -112,6 +115,22 @@ export class ChartStore {
         preferSharps: this.preferSharps,
       }),
     );
+  }
+
+  private loadTempo(): number {
+    try {
+      const raw = localStorage.getItem(TEMPO_KEY);
+      if (raw) {
+        return JSON.parse(raw) as number;
+      }
+    } catch {
+      // ignore
+    }
+    return 120;
+  }
+
+  private persistTempo() {
+    localStorage.setItem(TEMPO_KEY, JSON.stringify(this.tempo));
   }
 
   private loadManualTranspose(): number {
@@ -209,6 +228,12 @@ export class ChartStore {
       this.persistManualTranspose();
       this.listeners.forEach((l) => l());
     }
+  }
+
+  setTempo(bpm: number) {
+    this.tempo = bpm;
+    this.persistTempo();
+    this.listeners.forEach((l) => l());
   }
 
   toJSON() {

@@ -106,10 +106,25 @@ export function Controls(): HTMLElement {
     store.resetTranspose();
   };
 
+  const tempoLabel = document.createElement('label');
+  tempoLabel.textContent = 'Tempo: ';
+  const tempoInput = document.createElement('input');
+  tempoInput.type = 'number';
+  tempoInput.min = '40';
+  tempoInput.max = '240';
+  tempoInput.value = String(store.tempo);
+  tempoInput.onchange = () => {
+    const val = Number(tempoInput.value);
+    if (!Number.isNaN(val)) {
+      store.setTempo(val);
+    }
+  };
+  tempoLabel.appendChild(tempoInput);
+
   const playBtn = document.createElement('button');
   playBtn.textContent = 'Reproducir';
   playBtn.onclick = () => {
-    playChart(store.chart);
+    playChart(store.chart, store.tempo);
   };
 
   const stopBtn = document.createElement('button');
@@ -218,6 +233,7 @@ export function Controls(): HTMLElement {
     updateMarkerSelect();
     updateViewControls();
     updateTransposeInfo();
+    tempoInput.value = String(store.tempo);
   });
   updateMarkerSelect();
 
@@ -230,6 +246,7 @@ export function Controls(): HTMLElement {
     transposeDownBtn,
     transposeInfo,
     resetTransposeBtn,
+    tempoLabel,
     playBtn,
     stopBtn,
     instrumentLabel,
