@@ -1,6 +1,7 @@
 import { Chart, schemaVersion } from '../core/model';
 
 const STORAGE_KEY = 'jaireal.chart';
+const SHOW_SECONDARY_KEY = 'jaireal.showSecondary';
 
 const demoChart = (): Chart => ({
   schemaVersion,
@@ -19,13 +20,15 @@ type Listener = () => void;
 
 export class ChartStore {
   chart: Chart;
+  showSecondary: boolean;
   private listeners: Set<Listener> = new Set();
 
   constructor() {
-    this.chart = this.load();
+    this.chart = this.loadChart();
+    this.showSecondary = this.loadShowSecondary();
   }
 
-  private load(): Chart {
+  private loadChart(): Chart {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -41,6 +44,25 @@ export class ChartStore {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.chart));
   }
 
+  private loadShowSecondary(): boolean {
+    try {
+      const raw = localStorage.getItem(SHOW_SECONDARY_KEY);
+      if (raw !== null) {
+        return JSON.parse(raw) as boolean;
+      }
+    } catch {
+      // ignore
+    }
+    return true;
+  }
+
+  private persistShowSecondary() {
+    localStorage.setItem(
+      SHOW_SECONDARY_KEY,
+      JSON.stringify(this.showSecondary),
+    );
+  }
+
   subscribe(listener: Listener) {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -49,6 +71,12 @@ export class ChartStore {
   setChart(chart: Chart) {
     this.chart = chart;
     this.persist();
+    this.listeners.forEach((l) => l());
+  }
+
+  toggleSecondary() {
+    this.showSecondary = !this.showSecondary;
+    this.persistShowSecondary();
     this.listeners.forEach((l) => l());
   }
 

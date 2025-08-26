@@ -34,8 +34,15 @@ export function Grid(): HTMLElement {
           ev.preventDefault();
           ev.dataTransfer!.dropEffect = 'move';
         });
+        measureEl.addEventListener('dragenter', () => {
+          measureEl.classList.add('drag-over');
+        });
+        measureEl.addEventListener('dragleave', () => {
+          measureEl.classList.remove('drag-over');
+        });
         measureEl.addEventListener('drop', (ev) => {
           ev.preventDefault();
+          measureEl.classList.remove('drag-over');
           if (dragSection === sIdx && dragIndex !== null) {
             const measures = section.measures;
             const [m] = measures.splice(dragIndex, 1);
@@ -69,6 +76,7 @@ export function Grid(): HTMLElement {
           secondaryEl.className = 'secondary';
           secondaryEl.contentEditable = 'true';
           secondaryEl.textContent = beat.secondary || '';
+          secondaryEl.style.display = store.showSecondary ? '' : 'none';
           secondaryEl.oninput = () => {
             beat.secondary = secondaryEl.textContent || '';
             store.setChart(store.chart);

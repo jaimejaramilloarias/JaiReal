@@ -28,6 +28,18 @@ export function Controls(): HTMLElement {
     }
   };
 
-  el.append(saveBtn, loadInput);
+  const toggleSecondaryBtn = document.createElement('button');
+  const updateToggleText = () => {
+    toggleSecondaryBtn.textContent = store.showSecondary
+      ? 'Ocultar renglón secundario'
+      : 'Mostrar renglón secundario';
+  };
+  updateToggleText();
+  toggleSecondaryBtn.onclick = () => {
+    store.toggleSecondary();
+    updateToggleText();
+  };
+
+  el.append(saveBtn, loadInput, toggleSecondaryBtn);
   return el;
 }
