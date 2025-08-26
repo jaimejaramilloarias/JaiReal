@@ -1,4 +1,5 @@
 import { store } from '../../state/store';
+import type { Marker } from '../../core/model';
 
 export function Controls(): HTMLElement {
   const el = document.createElement('div');
@@ -29,17 +30,63 @@ export function Controls(): HTMLElement {
   };
 
   const toggleSecondaryBtn = document.createElement('button');
+  const shortcut = 'Ctrl+Shift+L';
   const updateToggleText = () => {
     toggleSecondaryBtn.textContent = store.showSecondary
-      ? 'Ocultar renglón secundario'
-      : 'Mostrar renglón secundario';
+      ? `Ocultar renglón secundario (${shortcut})`
+      : `Mostrar renglón secundario (${shortcut})`;
+    toggleSecondaryBtn.title = shortcut;
   };
   updateToggleText();
   toggleSecondaryBtn.onclick = () => {
     store.toggleSecondary();
   };
-  store.subscribe(updateToggleText);
 
-  el.append(saveBtn, loadInput, toggleSecondaryBtn);
+  const markerLabel = document.createElement('label');
+  markerLabel.textContent = 'Marcador: ';
+  const markerSelect = document.createElement('select');
+  const markerOptions: (Marker | '')[] = [
+    '',
+    '%',
+    '||:',
+    ':||',
+    'Segno',
+    'Coda',
+    'Fine',
+    'D.C.',
+    'D.S.',
+    'To Coda',
+  ];
+  markerOptions.forEach((m) => {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m || '(sin marcador)';
+    markerSelect.appendChild(opt);
+  });
+  const updateMarkerSelect = () => {
+    if (store.selectedSection === null || store.selectedMeasure === null) {
+      markerSelect.disabled = true;
+      markerSelect.value = '';
+      return;
+    }
+    markerSelect.disabled = false;
+    const measure =
+      store.chart.sections[store.selectedSection].measures[
+        store.selectedMeasure
+      ];
+    markerSelect.value = measure.markers?.[0] || '';
+  };
+  markerSelect.onchange = () => {
+    store.setMarker(markerSelect.value as Marker | '');
+  };
+
+  store.subscribe(() => {
+    updateToggleText();
+    updateMarkerSelect();
+  });
+  updateMarkerSelect();
+
+  markerLabel.appendChild(markerSelect);
+  el.append(saveBtn, loadInput, toggleSecondaryBtn, markerLabel);
   return el;
 }

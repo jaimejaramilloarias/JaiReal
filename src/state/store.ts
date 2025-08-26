@@ -1,4 +1,9 @@
-import { Chart, schemaVersion } from '../core/model';
+import {
+  type Chart,
+  schemaVersion,
+  type Measure,
+  type Marker,
+} from '../core/model';
 
 const STORAGE_KEY = 'jaireal.chart';
 const SHOW_SECONDARY_KEY = 'jaireal.showSecondary';
@@ -21,6 +26,8 @@ type Listener = () => void;
 export class ChartStore {
   chart: Chart;
   showSecondary: boolean;
+  selectedSection: number | null = null;
+  selectedMeasure: number | null = null;
   private listeners: Set<Listener> = new Set();
 
   constructor() {
@@ -74,6 +81,22 @@ export class ChartStore {
     this.listeners.forEach((l) => l());
   }
 
+  selectMeasure(section: number | null, measure: number | null) {
+    this.selectedSection = section;
+    this.selectedMeasure = measure;
+    this.listeners.forEach((l) => l());
+  }
+
+  updateSelectedMeasure(updater: (m: Measure) => void) {
+    if (this.selectedSection === null || this.selectedMeasure === null) return;
+    const section = this.chart.sections[this.selectedSection];
+    const measure = section?.measures[this.selectedMeasure];
+    if (measure) {
+      updater(measure);
+      this.setChart(this.chart);
+    }
+  }
+
   toggleSecondary() {
     this.showSecondary = !this.showSecondary;
     this.persistShowSecondary();
@@ -86,6 +109,16 @@ export class ChartStore {
 
   fromJSON(json: string) {
     this.setChart(JSON.parse(json));
+  }
+
+  setMarker(marker: Marker | '') {
+    this.updateSelectedMeasure((m) => {
+      if (marker) {
+        m.markers = [marker];
+      } else {
+        delete m.markers;
+      }
+    });
   }
 }
 

@@ -34,4 +34,34 @@ describe('ChartStore', () => {
     const s2 = new ChartStore();
     expect(s2.showSecondary).toBe(false);
   });
+
+  it('selects measures and applies markers', () => {
+    const s = new ChartStore();
+    s.setChart({
+      schemaVersion: 1,
+      title: 't',
+      sections: [
+        {
+          name: 'A',
+          measures: [
+            {
+              beats: [
+                { chord: 'C' },
+                { chord: '' },
+                { chord: '' },
+                { chord: '' },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    s.selectMeasure(0, 0);
+    expect(s.selectedSection).toBe(0);
+    expect(s.selectedMeasure).toBe(0);
+    s.setMarker('%');
+    expect(s.chart.sections[0].measures[0].markers).toEqual(['%']);
+    s.setMarker('');
+    expect(s.chart.sections[0].measures[0].markers).toBeUndefined();
+  });
 });

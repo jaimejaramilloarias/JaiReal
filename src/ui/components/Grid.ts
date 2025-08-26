@@ -24,6 +24,12 @@ export function Grid(): HTMLElement {
         const measureEl = document.createElement('div');
         measureEl.className = 'measure';
         measureEl.draggable = true;
+        if (store.selectedSection === sIdx && store.selectedMeasure === mIdx) {
+          measureEl.classList.add('selected');
+        }
+        measureEl.onclick = () => {
+          store.selectMeasure(sIdx, mIdx);
+        };
         measureEl.addEventListener('dragstart', (ev) => {
           ev.dataTransfer?.setData('text/plain', '');
           (ev.dataTransfer || ({} as DataTransfer)).effectAllowed = 'move';
@@ -54,6 +60,13 @@ export function Grid(): HTMLElement {
           dragIndex = null;
           dragSection = null;
         });
+
+        if (measure.markers && measure.markers.length) {
+          const markerEl = document.createElement('div');
+          markerEl.className = 'markers';
+          markerEl.textContent = measure.markers.join(' ');
+          measureEl.appendChild(markerEl);
+        }
 
         for (let b = 0; b < 4; b++) {
           if (!measure.beats[b]) {
