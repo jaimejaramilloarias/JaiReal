@@ -138,7 +138,7 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 [x] Outbox IndexedDB con clientMutationId; LWW; pull/push delta; reintentos; UI de estado; conflictos básicos.
 
 15B.4 Autenticación y permisos
-[ ] Email/Google; roles owner/editor/commenter/reader; enlaces revocables; auditoría mínima.
+[x] Email/Google; roles owner/editor/commenter/reader; enlaces revocables; auditoría mínima.
 
 15B.5 Biblioteca cloud
 [x] Listado con filtros; favoritos/archivados/papelera; backups diarios.
@@ -154,7 +154,7 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 
 Criterios de aceptación (15B)
 [ ] Login → editar offline → reconectar → sync automático ok.
-[ ] Compartir enlace de lectura y revocar acceso.
+[x] Compartir enlace de lectura y revocar acceso.
 [ ] Conflictos detectados con opción “local” o “remoto”.
 
 16. Accesibilidad e i18n
