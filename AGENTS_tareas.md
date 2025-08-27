@@ -153,7 +153,7 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 [x] Indicadores de red y sync; Forzar sync; Resolver conflicto.
 
 Criterios de aceptación (15B)
-[ ] Login → editar offline → reconectar → sync automático ok.
+[x] Login → editar offline → reconectar → sync automático ok.
 [x] Compartir enlace de lectura y revocar acceso.
 [ ] Conflictos detectados con opción “local” o “remoto”.
 
