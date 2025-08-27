@@ -1,4 +1,4 @@
-import './style.css';
+import './style.css'; // ensure CSS loads first
 import { Header } from './ui/components/Header';
 import { Rail } from './ui/components/Rail';
 import { Grid } from './ui/components/Grid';

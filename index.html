@@ -10,18 +10,7 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co; img-src 'self'; font-src 'self'"
     />
-    <script>
-      if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-        location.replace(
-          'https://' +
-            location.host +
-            location.pathname +
-            location.search +
-            location.hash,
-        );
-      }
-      document.cookie = 'jaireal=1; path=/; SameSite=Lax; Secure';
-    </script>
+    <script defer src="/redirect.js"></script>
     <title>JaiReal-PRO</title>
   </head>
   <body>
