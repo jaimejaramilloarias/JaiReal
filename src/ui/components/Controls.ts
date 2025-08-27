@@ -13,7 +13,8 @@ import {
   getChart as getLibraryChart,
 } from '../../state/library';
 import { LibraryModal } from './LibraryModal';
-import { t } from '../../i18n';
+import { t, getLang, setLang } from '../../i18n';
+import { syncNow } from '../../state/sync';
 
 type WaveType = 'sine' | 'square' | 'triangle' | 'sawtooth';
 
@@ -109,6 +110,17 @@ export function Controls(): HTMLElement {
     document.body.appendChild(modal);
   };
 
+  const syncBtn = document.createElement('button');
+  syncBtn.onclick = () => {
+    syncNow().catch(() => {});
+  };
+
+  const langBtn = document.createElement('button');
+  langBtn.onclick = () => {
+    const next = getLang() === 'es' ? 'en' : 'es';
+    setLang(next);
+  };
+
   const templateLabel = document.createElement('label');
   const templateSelect = document.createElement('select');
   const templateOptions: TemplateName[] = [
@@ -183,6 +195,10 @@ export function Controls(): HTMLElement {
       s12: transposeOctDownShortcut,
     });
     resetTransposeBtn.textContent = t('resetTranspose');
+    syncBtn.textContent = t('syncNow');
+    syncBtn.title = t('syncNowTitle');
+    langBtn.textContent = t('toggleLang');
+    langBtn.title = t('toggleLangTitle');
     updateToggleText();
     updateTransposeInfo();
   };
@@ -580,6 +596,8 @@ export function Controls(): HTMLElement {
     voltaLabel,
     clearVoltaBtn,
     markerLabel,
+    syncBtn,
+    langBtn,
     messageEl,
   );
   return el;
