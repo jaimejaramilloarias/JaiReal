@@ -1,33 +1,26 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import type { SupabaseClientLike } from './outbox';
+// Modo tolerante: si faltan envs, no crashea en dev, exporta stub.
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-const url = import.meta.env.VITE_SUPABASE_URL;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
-let supabase: SupabaseClient & SupabaseClientLike;
+type NoOpResult = { data: null; error: null };
+type AnyFn = (...args: unknown[]) => Promise<NoOpResult>;
+const noOp: AnyFn = async () => ({ data: null, error: null });
 
-if (url && anonKey) {
-  supabase = createClient(url, anonKey) as unknown as SupabaseClient & SupabaseClientLike;
-} else {
-  console.warn('Supabase disabled: missing env vars');
-  const resolved = async () => ({ data: null, error: null });
-  const from = () => ({
-    insert: resolved,
-    delete: () => ({ eq: resolved }),
-    select: () => ({ eq: resolved }),
-    upsert: resolved,
-  });
-  supabase = {
-    from,
-    auth: {
-      signInWithOtp: resolved,
-      signInWithOAuth: resolved,
-      signOut: resolved,
-      onAuthStateChange: () => ({
-        data: { subscription: { unsubscribe() {} } },
-      }),
-    },
-  } as unknown as SupabaseClient & SupabaseClientLike;
-}
-
-export { supabase };
+export const supabase: SupabaseClient =
+  url && anon
+    ? (await import('@supabase/supabase-js')).createClient(url, anon)
+    : (() => {
+        console.warn('Supabase disabled: missing env vars');
+        // stub mínimo compatible con llamadas básicas que hace la app
+        return {
+          from: () => ({
+            select: noOp,
+            insert: noOp,
+            update: noOp,
+            delete: noOp,
+          }),
+          auth: { getUser: noOp, signInWithPassword: noOp, signOut: noOp },
+        } as unknown as SupabaseClient;
+      })();

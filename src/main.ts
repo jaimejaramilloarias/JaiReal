@@ -1,4 +1,4 @@
-import './style.css'; // ensure CSS loads first
+import './style.css';
 import { Header } from './ui/components/Header';
 import { Rail } from './ui/components/Rail';
 import { Grid } from './ui/components/Grid';
@@ -12,7 +12,8 @@ app.append(Header(), Rail(), Grid(), Controls());
 
 syncNow().catch(() => {});
 
-if ('serviceWorker' in navigator) {
+// registra SW solo en producción para que no interfiera en `npm run dev`
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {
       // ignore
