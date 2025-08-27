@@ -144,7 +144,7 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 [x] Listado con filtros; favoritos/archivados/papelera; backups diarios.
 
 15B.6 Import/Export online
-[ ] Parse en worker; export por lotes (PDF/ZIP) con cola.
+[x] Parse en worker; export por lotes (PDF/ZIP) con cola.
 
 15B.7 Seguridad
 [x] HTTPS, CSP, SameSite, rate-limits, size-limits, backups/restore por chart.
@@ -155,7 +155,7 @@ Objetivo: offline-first con sync en la nube, compartir y backups.
 Criterios de aceptación (15B)
 [x] Login → editar offline → reconectar → sync automático ok.
 [x] Compartir enlace de lectura y revocar acceso.
-[ ] Conflictos detectados con opción “local” o “remoto”.
+[x] Conflictos detectados con opción “local” o “remoto”.
 
 16. Accesibilidad e i18n
     [x] Teclado, roles/aria, atajos; ES/EN.
@@ -175,9 +175,9 @@ Criterios de aceptación (15B)
     [x] TS estricto, lógica pura en core, sin innerHTML, eventos delegados, Conventional Commits.
 
 19. Hitos
-    [ ] MVP: 1–8,10,11(PDF),12(min),15(PWA),17 parcial,18.
-    [ ] v1: 9,11(PNG/SVG),13,14,15B (sync+share lectura),16,17 completo.
-    [ ] v2: colaboración tiempo real, LMS, lote PDF/ZIP, diffs y merge por compás.
+    [x] MVP: 1–8,10,11(PDF),12(min),15(PWA),17 parcial,18.
+    [x] v1: 9,11(PNG/SVG),13,14,15B (sync+share lectura),16,17 completo.
+    [x] v2: colaboración tiempo real, LMS, lote PDF/ZIP, diffs y merge por compás.
 
 20. Audio
     [x] Reproducción de acordes con Web Audio API.
